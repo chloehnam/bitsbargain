@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitsbargain — Tally, 이커머스 셀러 인텔리전스</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --primary-light: #dbeafe;
+    --primary-lighter: #eff6ff;
+    --dark: #1e1733;
+    --dark-2: #2d2250;
+    --text: #495057;
+    --text-dark: #1a1a2e;
+    --text-light: #6b7280;
+    --bg: #f8fafc;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --accent: #a78bfa;
+    --accent-light: #ede9fe;
+    --success: #059669;
+    --success-light: #ecfdf5;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.05);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.10);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+    font-weight: 400;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 1px 24px rgba(0,0,0,0.06); }
+  .nav-inner {
+    max-width: 1140px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 64px;
+  }
+  .logo {
+    font-size: 20px; font-weight: 700; color: var(--dark);
+    text-decoration: none; letter-spacing: -0.5px;
+  }
+  .logo .accent { color: var(--primary); }
+  .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-light);
+    font-size: 14px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-cta {
+    background: var(--dark) !important; color: var(--white) !important;
+    padding: 8px 20px; border-radius: 8px;
+    font-size: 13px !important; font-weight: 600 !important;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; color: var(--white) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 160px 32px 120px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--dark) 0%, #271d45 50%, var(--dark-2) 100%);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.8);
+    font-size: 13px; font-weight: 500;
+    padding: 7px 18px; border-radius: 24px;
+    margin-bottom: 32px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .hero h1 {
+    font-size: 52px; font-weight: 700; color: var(--white);
+    line-height: 1.25; margin-bottom: 24px; letter-spacing: -1.5px;
+    position: relative;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #60a5fa);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  .hero p {
+    font-size: 18px; color: rgba(255,255,255,0.6);
+    max-width: 520px; margin: 0 auto 48px; line-height: 1.8;
+  }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary); color: var(--white);
+    padding: 14px 28px; border-radius: 10px;
+    font-size: 15px; font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(59,130,246,0.3); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    padding: 14px 28px; border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+  .btn-secondary svg, .btn-primary svg { width: 18px; height: 18px; }
+
+  /* hero screenshot mockup */
+  .hero-mockup {
+    margin-top: 64px;
+    max-width: 900px; margin-left: auto; margin-right: auto;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(167,139,250,0.12));
+    padding: 3px;
+    position: relative;
+  }
+  .mockup-inner {
+    background: var(--dark);
+    border-radius: 10px;
+    padding: 20px 24px;
+    min-height: 340px;
+    position: relative;
+    overflow: hidden;
+  }
+  .mockup-bar {
+    display: flex; gap: 6px; margin-bottom: 20px;
+  }
+  .mockup-bar span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+  }
+  .mockup-bar span:first-child { background: #ff5f57; }
+  .mockup-bar span:nth-child(2) { background: #febc2e; }
+  .mockup-bar span:nth-child(3) { background: #28c840; }
+  .mockup-grid {
+    display: grid; grid-template-columns: 160px 1fr; gap: 16px; height: 280px;
+  }
+  .mockup-sidebar {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px; padding: 16px;
+  }
+  .mockup-sidebar .sb-item {
+    padding: 8px 10px; border-radius: 6px;
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-bottom: 4px; font-weight: 500;
+  }
+  .mockup-sidebar .sb-item.active {
+    background: rgba(59,130,246,0.15);
+    color: var(--primary);
+  }
+  .mockup-content {
+    display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto 1fr;
+    gap: 12px;
+  }
+  .mockup-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 14px;
+  }
+  .mockup-card .mc-label {
+    font-size: 9px; color: rgba(255,255,255,0.35);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+  }
+  .mockup-card .mc-value {
+    font-size: 18px; font-weight: 700; color: var(--white);
+  }
+  .mockup-card .mc-value.blue { color: var(--primary); }
+  .mockup-card .mc-value.green { color: var(--success); }
+  .mockup-card .mc-value.purple { color: var(--accent); }
+  .mockup-chart {
+    grid-column: 1 / -1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 16px;
+    display: flex; align-items: flex-end; gap: 6px;
+    padding-bottom: 20px;
+  }
+  .chart-bar {
+    flex: 1; border-radius: 4px 4px 0 0;
+    background: linear-gradient(180deg, var(--primary), rgba(59,130,246,0.3));
+    min-height: 20px;
+    transition: height 0.3s;
+  }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 100px 32px; }
+  .container { max-width: 1140px; margin: 0 auto; }
+  .section-label {
+    font-size: 13px; font-weight: 600; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: 36px; font-weight: 700; color: var(--text-dark);
+    margin-bottom: 16px; letter-spacing: -0.8px; line-height: 1.3;
+  }
+  .section-desc {
+    font-size: 17px; color: var(--text-light);
+    max-width: 680px; line-height: 1.8;
+  }
+  .text-center { text-align: center; }
+  .text-center .section-desc { margin: 0 auto; }
+
+  /* ── METRICS STRIP ── */
+  .metrics {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 32px;
+  }
+  .metrics-grid {
+    max-width: 1140px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+    text-align: center;
+  }
+  .metric .m-num {
+    font-size: 40px; font-weight: 700; color: var(--text-dark);
+    letter-spacing: -1px; line-height: 1.2;
+  }
+  .metric .m-num span { color: var(--primary); }
+  .metric .m-label {
+    font-size: 14px; color: var(--text-light); margin-top: 6px; font-weight: 400;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--white); }
+  .about-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 72px; align-items: center;
+    margin-top: 48px;
+  }
+  .about-text p {
+    margin-bottom: 20px; line-height: 1.9; color: var(--text); font-size: 15px;
+  }
+  .about-text p strong { color: var(--text-dark); font-weight: 600; }
+  .about-values {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .value-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 20px; border-radius: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .value-item:hover { border-color: var(--primary-light); }
+  .value-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .value-icon.blue { background: var(--primary-light); color: var(--primary); }
+  .value-icon.purple { background: var(--accent-light); color: #7c3aed; }
+  .value-icon.green { background: var(--success-light); color: var(--success); }
+  .value-icon svg { width: 20px; height: 20px; }
+  .value-item h4 { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+  .value-item p { font-size: 13px; color: var(--text-light); line-height: 1.6; margin: 0; }
+
+  /* ── FEATURES ── */
+  #features { background: var(--bg); }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 56px;
+  }
+  .feat-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 36px 28px;
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: transparent; }
+  .feat-card:hover::before { opacity: 1; }
+  .feat-icon {
+    width: 48px; height: 48px;
+    background: var(--primary-lighter);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .feat-icon svg { width: 24px; height: 24px; color: var(--primary); }
+  .feat-card h3 {
+    font-size: 18px; font-weight: 600; color: var(--text-dark);
+    margin-bottom: 10px;
+  }
+  .feat-card p { font-size: 14px; color: var(--text-light); line-height: 1.75; }
+  .feat-tag {
+    display: inline-block; margin-top: 16px;
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+    background: var(--primary-lighter); color: var(--primary);
+  }
+
+  /* ── HOW IT WORKS ── */
+  #how {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-2) 100%);
+    color: var(--white);
+  }
+  #how .section-label { color: rgba(255,255,255,0.4); }
+  #how .section-title { color: var(--white); }
+  #how .section-desc { color: rgba(255,255,255,0.5); }
+  .steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 32px; margin-top: 56px;
+    position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute; top: 32px; left: 64px; right: 64px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(96,165,250,0.3), rgba(167,139,250,0.3));
+  }
+  .step { text-align: center; position: relative; }
+  .step-num {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 22px; font-weight: 700;
+    background-image: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative; z-index: 1;
+  }
+  .step h3 {
+    font-size: 16px; font-weight: 600; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .step p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* ── TEAM ── */
+  #team { background: var(--bg); }
+  .team-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+    margin-top: 48px;
+  }
+  .team-text p {
+    font-size: 15px; color: var(--text); line-height: 1.9;
+    margin-bottom: 20px;
+  }
+  .team-hiring {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--success-light);
+    color: var(--success);
+    padding: 10px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    margin-top: 8px;
+  }
+  .team-hiring .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+  }
+  .team-visual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .team-card {
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
+  .team-card .tc-role {
+    font-size: 11px; color: var(--primary); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .team-card .tc-desc {
+    font-size: 13px; color: var(--text-light); line-height: 1.6;
+  }
+  .team-card:nth-child(1) { grid-column: 1 / -1; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--white); }
+  .contact-layout {
+    margin-top: 48px;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 28px; }
+  .contact-row {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .contact-row .ic {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: var(--primary-lighter);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .contact-row .ic svg { width: 20px; height: 20px; color: var(--primary); }
+  .contact-row .label {
+    font-size: 12px; color: var(--text-light); font-weight: 500;
+    margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .contact-row .value {
+    font-size: 15px; color: var(--text-dark); font-weight: 500;
+  }
+  .contact-right {
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 40px;
+    border: 1px solid var(--border);
+  }
+  .contact-right h3 {
+    font-size: 20px; font-weight: 600; color: var(--text-dark);
+    margin-bottom: 12px;
+  }
+  .contact-right p {
+    font-size: 14px; color: var(--text-light); line-height: 1.8;
+    margin-bottom: 24px;
+  }
+  .contact-right a {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary); color: var(--white);
+    padding: 12px 24px; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .contact-right a:hover { background: var(--primary-dark); }
+  .contact-right a svg { width: 16px; height: 16px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.4);
+    padding: 48px 32px;
+  }
+  .footer-inner {
+    max-width: 1140px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-left .footer-logo {
+    font-size: 18px; font-weight: 700; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .footer-left .footer-logo .accent { color: var(--primary); }
+  .footer-left p { font-size: 13px; }
+  .footer-right { text-align: right; font-size: 13px; }
+  .footer-right a {
+    color: rgba(255,255,255,0.5); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-right a:hover { color: var(--white); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { padding: 130px 20px 64px; }
+    .hero h1 { font-size: 28px; letter-spacing: -0.8px; }
+    .hero p { font-size: 15px; }
+    .hero-badge { font-size: 12px; padding: 6px 14px; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 280px; justify-content: center; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .metric .m-num { font-size: 28px; }
+    .metric .m-label { font-size: 12px; }
+    .section-title { font-size: 26px; }
+    .section-desc { font-size: 15px; }
+    .about-layout, .team-grid { grid-template-columns: 1fr; gap: 40px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feat-card { padding: 28px 24px; }
+    .steps { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .steps::before { display: none; }
+    .step-num { width: 52px; height: 52px; font-size: 18px; }
+    .nav-links { display: none; }
+    section { padding: 56px 20px; }
+    .mockup-grid { grid-template-columns: 1fr; }
+    .mockup-sidebar { display: none; }
+    .mockup-content { grid-template-columns: repeat(2, 1fr); }
+    .mockup-card .mc-value { font-size: 15px; }
+    .hero-mockup { margin-top: 36px; }
+    .team-visual { grid-template-columns: 1fr; }
+    .team-card:nth-child(1) { grid-column: auto; }
+    .contact-info { gap: 20px; }
+    .footer-inner { flex-direction: column; text-align: center; gap: 16px; }
+    .footer-right { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+bits<span class="accent">bargain</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Tally — Now in Production
+  </div>
+  <h1>이커머스 셀러를 위한<br><span class="gradient">올인원 인텔리전스 플랫폼</span></h1>
+  <p>매출, 광고, 재고, 정산을 하나의 대시보드에서.<br>데이터 기반 의사결정으로 셀러의 성장을 가속합니다.</p>
+  <div class="hero-btns">
+    <a href="#features" class="btn-primary">
+      서비스 살펴보기
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    </a>
+  </div>
+
+  <!-- Dashboard Mockup -->
+  <div class="hero-mockup">
+    <div class="mockup-inner">
+      <div class="mockup-bar">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="mockup-grid">
+        <div class="mockup-sidebar">
+          <div class="sb-item active">Dashboard</div>
+          <div class="sb-item">매출분석</div>
+          <div class="sb-item">광고센터</div>
+          <div class="sb-item">재고관리</div>
+          <div class="sb-item">정산</div>
+          <div class="sb-item">키워드분석</div>
+          <div class="sb-item">노출순위</div>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-card">
+            <div class="mc-label">Today Revenue</div>
+            <div class="mc-value blue">₩2.4M</div>
+          </div>
+          <div class="mockup-card">
+            <div class="mc-label">Orders</div>
+            <div class="mc-value">127</div>
+          </div>
+          <div class="mockup-card">
+            <div class="mc-label">ROAS</div>
+            <div class="mc-value green">342%</div>
+          </div>
+          <div class="mockup-card">
+            <div class="mc-label">Net Profit</div>
+            <div class="mc-value purple">₩680K</div>
+          </div>
+          <div class="mockup-chart" id="mockupChart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<div class="metrics">
+  <div class="metrics-grid">
+    <div class="metric">
+      <div class="m-num">10<span>+</span></div>
+      <div class="m-label">자동화 모듈</div>
+    </div>
+    <div class="metric">
+      <div class="m-num">24<span>/7</span></div>
+      <div class="m-label">실시간 모니터링</div>
+    </div>
+    <div class="metric">
+      <div class="m-num">5<span>min</span></div>
+      <div class="m-label">데이터 갱신 주기</div>
+    </div>
+    <div class="metric">
+      <div class="m-num">99.9<span>%</span></div>
+      <div class="m-label">서비스 가동률</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About</div>
+    <div class="section-title">왜 Tally를 만들었는가</div>
+    <div class="about-layout">
+      <div class="about-text">
+        <p><strong>비츠바겐(Bitsbargain)</strong>은 이커머스 셀러가 겪는 데이터 사일로 문제를 해결하기 위해 설립된 테크 스타트업입니다.</p>
+        <p>매출은 Wing에서, 광고는 광고센터에서, 정산은 엑셀에서 — 흩어진 데이터를 매일 수작업으로 취합하는 셀러의 현실에서 출발했습니다.</p>
+        <p><strong>Tally</strong>는 이 모든 데이터를 자동 수집·통합하여 하나의 대시보드에서 실시간으로 보여주는 <strong>셀러 인텔리전스 플랫폼</strong>입니다. 직접 셀러로서 겪은 페인포인트를 기술로 해결합니다.</p>
+      </div>
+      <div class="about-values">
+        <div class="value-item">
+          <div class="value-icon blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+          </div>
+          <div>
+            <h4>Automation First</h4>
+            <p>수작업 제거. 데이터 수집부터 보고서 생성까지 완전 자동화</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon purple">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <h4>Single Source of Truth</h4>
+            <p>모든 채널의 매출·비용·수익을 하나의 뷰로 통합</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon green">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+          </div>
+          <div>
+            <h4>Battle-tested</h4>
+            <p>자사 셀러 운영으로 실전 검증된 시스템</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container text-center">
+    <div class="section-label">Features</div>
+    <div class="section-title">셀러가 진짜 필요한 기능만</div>
+    <div class="section-desc">매일 반복되는 수작업을 자동화하고,<br>흩어진 데이터를 한눈에 볼 수 있도록 설계했습니다.</div>
+  </div>
+  <div class="container">
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+        </div>
+        <h3>실시간 매출 대시보드</h3>
+        <p>로켓·판매자 채널별 매출, 주문 수, 순이익을 실시간으로 추적. 어제 대비 변동까지 한눈에 파악합니다.</p>
+        <span class="feat-tag">Real-time</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/></svg>
+        </div>
+        <h3>광고 성과 분석</h3>
+        <p>캠페인별 ROAS, CPC, 전환율 자동 계산. 키워드 단위 수익성 분석으로 광고비 최적화를 지원합니다.</p>
+        <span class="feat-tag">Analytics</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
+        </div>
+        <h3>재고 · 사입 관리</h3>
+        <p>실시간 재고 추적, 자재 소진 예상일 계산, 사입 이력 관리. 품절 리스크를 사전에 알림으로 전달합니다.</p>
+        <span class="feat-tag">Automation</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
+        </div>
+        <h3>정산 자동 다운로드</h3>
+        <p>정산 엑셀을 매일 자동 다운로드하고 수수료·배송비·할인 내역을 파싱하여 상품별 순수익을 산출합니다.</p>
+        <span class="feat-tag">Finance</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+        </div>
+        <h3>키워드 · 노출순위 분석</h3>
+        <p>검색 트렌드, 월별 검색량, 시장 규모를 분석하고 내 상품의 노출 순위를 자동으로 추적합니다.</p>
+        <span class="feat-tag">SEO</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+        </div>
+        <h3>텔레그램 알림</h3>
+        <p>매출 변동, 재고 부족, 광고 이상 등 주요 이벤트를 텔레그램으로 즉시 알림. 어디서든 실시간 대응합니다.</p>
+        <span class="feat-tag">Notification</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container text-center">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">복잡한 셀링 데이터, 심플하게</div>
+    <div class="section-desc">연동부터 인사이트까지 4단계로 완성됩니다.</div>
+  </div>
+  <div class="container">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>채널 연동</h3>
+        <p>쿠팡 Wing, 광고센터, 네이버 등 판매 채널을 연결합니다</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>자동 수집</h3>
+        <p>매출·주문·광고·정산 데이터를 실시간으로 자동 수집합니다</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>통합 분석</h3>
+        <p>채널별 데이터를 통합하여 상품 단위 수익성을 계산합니다</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>인사이트 전달</h3>
+        <p>대시보드와 알림을 통해 즉시 의사결정할 수 있도록 합니다</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="section-label">Team</div>
+    <div class="section-title">작지만 강한 팀</div>
+    <div class="team-grid">
+      <div class="team-text">
+        <p>비츠바겐은 <strong>이커머스 실무 경험과 소프트웨어 엔지니어링을 결합</strong>한 팀입니다. 직접 셀러로 운영하며 겪은 문제를 기술로 해결합니다.</p>
+        <p>모든 기능은 실제 운영 데이터로 검증되고, 하루 수백 건의 주문을 처리하는 프로덕션 환경에서 안정성을 입증했습니다.</p>
+        <p>우리는 셀러가 데이터를 모으는 데 시간을 쓰지 않고, <strong>데이터를 기반으로 결정하는 데 집중</strong>할 수 있도록 돕습니다.</p>
+        <div class="team-hiring">
+          <span class="dot"></span>
+          We're Building — Stay tuned
+        </div>
+      </div>
+      <div class="team-visual">
+        <div class="team-card">
+          <div class="tc-role">Mission</div>
+          <div class="tc-desc">이커머스 셀러의 데이터 운영을 자동화하여 더 나은 비즈니스 결정을 가능하게 한다</div>
+        </div>
+        <div class="team-card">
+          <div class="tc-role">E-Commerce</div>
+          <div class="tc-desc">쿠팡 · 네이버 마켓 실전 운영 노하우</div>
+        </div>
+        <div class="team-card">
+          <div class="tc-role">Engineering</div>
+          <div class="tc-desc">풀스택 개발 및 데이터 파이프라인 설계</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <div class="section-title">Get in Touch</div>
+    <div class="contact-layout">
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="ic">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/></svg>
+          </div>
+          <div>
+            <div class="label">Company</div>
+            <div class="value">Bitsbargain (비츠바겐)</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+          </div>
+          <div>
+            <div class="label">Email</div>
+            <div class="value">chloe@bits<span class="accent">bargain</span>.com</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
+          </div>
+          <div>
+            <div class="label">Product</div>
+            <div class="value">Tally — Seller Intelligence Platform</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+          </div>
+          <div>
+            <div class="label">Industry</div>
+            <div class="value">E-Commerce SaaS · Seller Tools</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo">bits<span class="accent">bargain</span></div>
+      <p>&copy; 2026 Bitsbargain. All rights reserved.</p>
+    </div>
+    <div class="footer-right">
+      <p><a href="mailto:chloe@bits<span class="accent">bargain</span>.com">chloe@bits<span class="accent">bargain</span>.com</a></p>
+      <p style="margin-top:4px;">Tally — Seller Intelligence Platform</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // Animated chart bars
+  const chart = document.getElementById('mockupChart');
+  if (chart) {
+    const heights = [45, 62, 38, 78, 55, 90, 72, 85, 48, 95, 68, 82, 58, 75, 92, 65, 88, 50, 70, 80];
+    heights.forEach(h => {
+      const bar = document.createElement('div');
+      bar.className = 'chart-bar';
+      bar.style.height = h + '%';
+      chart.appendChild(bar);
+    });
+  }
+</script>
+
+</body>
+</html>
