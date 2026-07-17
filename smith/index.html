@@ -60,6 +60,7 @@
   .scChip.e-top{transform:rotate(180deg);}
   .scChip.e-left{transform:rotate(90deg);}
   .scChip.e-right{transform:rotate(-90deg);}
+  .scChip.sel{outline:3px solid var(--ink);outline-offset:1px;}
   .name-in{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;margin-bottom:8px;background:#fff;}
   .btn{display:block;width:100%;padding:15px;border-radius:12px;font-size:17px;font-weight:800;}
   .btn-primary{background:var(--red);color:#fff;box-shadow:var(--shadow);}
@@ -224,6 +225,7 @@
     </div>
     <div class="plabel">자리 배치 <span style="font-weight:400;color:#a89e88">· 실제 앉은 방향에 맞춰 회전</span></div>
     <div class="seatprev" id="seatPrev"></div>
+    <div class="hint" style="text-align:center;margin:2px 0 8px">칩 두 개를 탭하면 자리 교환 · ↻는 테이블 전체 회전</div>
     <button class="btn btn-sub" onclick="rotateHomeSeats()">↻ 자리 회전</button>
     <button class="btn btn-primary mt" onclick="startGame()">게임 시작</button>
     <button class="link" style="display:block;margin:8px auto 0" onclick="openEditor()">✎ 단어 카드 편집 (<span id="wcount">0</span>장)</button>
@@ -305,14 +307,27 @@ function randArrow(){ return Math.random()<0.5?'left':'right'; }
 let playerCount = 3;
 let endScore = 6;
 let homeSeatRot = 0;
+let homeSeatOrder = [];   // 시계방향 위치 p → 원래 플레이어 인덱스 (탭-스왑으로 재배치)
+let selSeatPos = null;    // 스왑 위해 선택된 위치
 function setScore(d){ endScore=Math.max(3,Math.min(20,endScore+d)); document.getElementById('scoreVal').textContent=endScore; }
 function rotateHomeSeats(){ homeSeatRot=(homeSeatRot+1)%4; renderSeatPreview(); }
+function onSeatTap(p){
+  if(selSeatPos===null){ selSeatPos=p; }
+  else if(selSeatPos===p){ selSeatPos=null; }
+  else { const t=homeSeatOrder[selSeatPos]; homeSeatOrder[selSeatPos]=homeSeatOrder[p]; homeSeatOrder[p]=t; selSeatPos=null; }
+  renderSeatPreview();
+}
 function renderSeatPreview(){
   const names=[...document.querySelectorAll('#nameList input')].map((el,i)=>el.value.trim()||`P${i+1}`);
-  const base=seatsBase(names.length);
+  const n=names.length;
+  if(homeSeatOrder.length!==n){ homeSeatOrder=[...Array(n).keys()]; selSeatPos=null; }
+  const base=seatsBase(n);
   const z={top:[],bottom:[],left:[],right:[]};
-  names.forEach((nm,i)=>{ const c=PCOLORS[i%PCOLORS.length]; z[rotEdge(base[i],homeSeatRot)].push({nm,c}); });
-  const chips=(arr,edge)=>arr.map(o=>`<span class="scChip e-${edge}" style="border-color:${o.c.b};color:${o.c.b};background:${o.c.bg}">${escapeHtml(o.nm)}</span>`).join('');
+  for(let p=0;p<n;p++){
+    const person=homeSeatOrder[p];
+    z[rotEdge(base[p],homeSeatRot)].push({p, nm:names[person], c:PCOLORS[person%PCOLORS.length]});
+  }
+  const chips=(arr,edge)=>arr.map(o=>`<span class="scChip e-${edge}${selSeatPos===o.p?' sel':''}" style="border-color:${o.c.b};color:${o.c.b};background:${o.c.bg}" onclick="onSeatTap(${o.p})">${escapeHtml(o.nm)}</span>`).join('');
   document.getElementById('seatPrev').innerHTML=`
     <div class="scEdge scTop">${chips(z.top,'top')}</div>
     <div class="scMid">
@@ -396,11 +411,14 @@ function startGame(){
   while(deck.length){ const c=deck.shift(); if(c.type==='word'){ first=c; break; } aside.push(c); }
   deck.push(...aside); shuffle(deck);
 
+  // 좌석(시계방향 위치) 순서대로 플레이어 정렬 → 턴/심판이 실제 앉은 순서를 따름. 색은 사람에 고정.
+  if(homeSeatOrder.length!==names.length) homeSeatOrder=[...Array(names.length).keys()];
+  const seated = homeSeatOrder.map(idx=>({ name:names[idx], color:PCOLORS[idx%PCOLORS.length], penalty:[] }));
   S={
     endScore,
     baseSeats: seatsBase(names.length),
     seatRot: homeSeatRot,
-    players: names.map(n=>({name:n, penalty:[]})),
+    players: seated,
     deck,
     board: first?[{cards:[first],repeat:1}]:[],
     current:0,
@@ -545,7 +563,7 @@ function renderPlayers(jIdx){
   ['top','bottom','left','right'].forEach(s=>document.getElementById('seat_'+s).innerHTML='');
   S.players.forEach((p,i)=>{
     const edge=rotEdge(S.baseSeats[i], S.seatRot);
-    const col=PCOLORS[i%PCOLORS.length];
+    const col=p.color||PCOLORS[i%PCOLORS.length];
     const d=document.createElement('div'); d.className='pl';
     d.style.borderColor=col.b; d.style.background=col.bg;
     if(i===S.current) d.classList.add('cur');
