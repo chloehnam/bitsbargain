@@ -83,7 +83,7 @@
   .amodal{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:20px;}
   .amodal-box{background:var(--card);color:var(--ink);border-radius:18px;padding:18px;width:100%;max-width:360px;box-shadow:var(--shadow);text-align:center;}
   .amodal-title{font-weight:800;margin-bottom:12px;font-size:16px;}
-  .amodal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;}
+  .amodal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;max-height:52vh;overflow:auto;-webkit-overflow-scrolling:touch;}
   .achip{padding-top:100%;border-radius:50%;background:#fff center/cover no-repeat;border:2px solid var(--line);cursor:pointer;}
   .achip.emoji{padding-top:0;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--paper2);}
   .achip:active{transform:scale(.94);}
@@ -420,7 +420,13 @@ function loadPlayers(){
   }catch(e){}
 }
 // 아바타 이모지 (가족 + 동물). 업로드 사진은 dataURL 로 구분.
-const AVATAR_EMOJIS=['👨','👩','👦','👧','👴','👵','🧑','👶','🐶','🐱','🐰','🐻','🐼','🦊','🐯','🐵','🐷','🐸','🐨','🐔'];
+const AVATAR_EMOJIS=[
+  '👨','👩','👦','👧','👴','👵','🧔','👶',
+  '🧑‍🦰','👩‍🦰','🧑‍🦱','👩‍🦳','🧑‍🦲','👨🏽','👩🏽','👨🏿',
+  '🦸','🦹','🧙','🥷','🤴','👸','🎅','🤶',
+  '👮','👷','🧑‍🚀','🕵️','🤡','👽','🤖','👻',
+  '🐶','🐱','🐰','🐻','🐼','🦊','🐯','🦁',
+  '🐮','🐷','🐸','🐵','🐨','🐔','🐧','🦄'];
 function isPhoto(v){ return typeof v==='string' && v.indexOf('data:')===0; }  // 업로드 사진 여부
 let avatarFor=null;
 function openAvatar(i){
