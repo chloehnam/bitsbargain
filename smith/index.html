@@ -722,8 +722,7 @@ function renderControls(){
       const readerIdx=(S.readerIdx!=null)?S.readerIdx:S.current;
       const voters=S.players.map((p,i)=>i).filter(i=>i!==readerIdx);
       const voted=voters.filter(i=>S.votes[i]).length;
-      el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 읽기 (×2·×3 반복) · <b>각자 자기 앞 버튼</b>으로 판정 (읽는 사람 제외, 동점=실패)</div>
-        <button class="btn btn-primary" ${voted<voters.length?'disabled style="opacity:.45"':''} onclick="tallyVotes()">판정 완료 (${voted}/${voters.length})</button>`;
+      el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 읽기 (×2·×3 반복)<br><b>각자 자기 앞 버튼</b>으로 판정 · 전원 누르면 자동 판정 (동점=실패) · 투표 ${voted}/${voters.length}</div>`;
     } else {
       el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 모두 읽습니다. (×2·×3 표시는 그만큼 반복!)<br><b>${escapeHtml(judge)}</b>님이 판정하세요.</div>
         <div class="row2">
@@ -744,9 +743,27 @@ function renderControls(){
 
 /* ---------- 음성 안내(TTS) ---------- */
 let ttsOn=true;
+let _koVoice=null;
+function pickVoice(){
+  try{
+    const vs=window.speechSynthesis.getVoices();
+    _koVoice = vs.find(v=>/yuna/i.test(v.name)) ||        // iOS/macOS 한국어(유나)
+               vs.find(v=>/ko[-_]?kr/i.test(v.lang)) ||   // ko-KR
+               vs.find(v=>(v.lang||'').toLowerCase().startsWith('ko')) || null;
+  }catch(e){}
+}
+if(typeof window!=='undefined' && window.speechSynthesis){
+  pickVoice();
+  window.speechSynthesis.onvoiceschanged=pickVoice;
+}
 function narrate(t){
   if(!ttsOn || !t) return;
-  try{ const u=new SpeechSynthesisUtterance(t); u.lang='ko-KR'; u.rate=1.05; window.speechSynthesis.speak(u); }catch(e){}
+  try{
+    const u=new SpeechSynthesisUtterance(t);
+    if(_koVoice) u.voice=_koVoice;
+    u.lang='ko-KR'; u.rate=1.0; u.pitch=1.0;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
 }
 function narrateTurn(){
   if(!S) return;
@@ -787,8 +804,7 @@ function beep(kind){
   }catch(e){}
 }
 function showResult(kind, cb){
-  beep(kind);
-  narrate(kind==='ok'?'성공!':'실패!');
+  beep(kind);   // 성공/실패는 효과음만 (음성 중복 방지)
   const o=document.createElement('div');
   o.className='result '+(kind==='ok'?'rok':'rfail');
   o.innerHTML = kind==='ok'
@@ -815,7 +831,13 @@ function onFail(){
 }
 
 /* ---------- 다수결 투표 ---------- */
-function castVote(i,v){ S.votes[i]=v; render(); }
+function castVote(i,v){
+  S.votes[i]=v;
+  const readerIdx=(S.readerIdx!=null)?S.readerIdx:S.current;
+  const voters=S.players.map((_,k)=>k).filter(k=>k!==readerIdx);
+  if(voters.every(k=>S.votes[k])){ tallyVotes(); return; }  // 전원 투표 시 자동 판정
+  render();
+}
 function tallyVotes(){
   const readerIdx = (S.readerIdx!=null)? S.readerIdx : S.current;
   const voters = S.players.map((_,i)=>i).filter(i=>i!==readerIdx);
