@@ -755,8 +755,8 @@ function renderPlayers(jIdx){
       else {
         const v=S.votes[i];
         voteHtml=`<div class="votebtns">
-          <button class="vbtn ok${v==='ok'?' sel':''}" onclick="castVote(${i},'ok')">✓</button>
-          <button class="vbtn no${v==='fail'?' sel':''}" onclick="castVote(${i},'fail')">✕</button>
+          <button class="vbtn ok${v==='ok'?' sel':''}" onclick="castVote(${i},'ok')">⭕</button>
+          <button class="vbtn no${v==='fail'?' sel':''}" onclick="castVote(${i},'fail')">❌</button>
         </div>`;
       }
     }
@@ -788,12 +788,12 @@ function renderControls(){
       const readerIdx=(S.readerIdx!=null)?S.readerIdx:S.current;
       const voters=S.players.map((p,i)=>i).filter(i=>i!==readerIdx);
       const voted=voters.filter(i=>S.votes[i]).length;
-      el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 읽기 (×2·×3 반복)<br><b>각자 자기 앞 버튼</b>으로 판정 · 전원 누르면 자동 판정 (동점=실패) · 투표 ${voted}/${voters.length}</div>`;
+      el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 읽기 (×2·×3 반복)<br><b>각자 자기 앞 버튼</b>으로 판정 · 전원 누르면 자동 판정 (동수면 오른쪽 사람 결정) · 투표 ${voted}/${voters.length}</div>`;
     } else {
       el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 모두 읽습니다. (×2·×3 표시는 그만큼 반복!)<br><b>${escapeHtml(judge)}</b>님이 판정하세요.</div>
         <div class="row2">
-          <button class="btn btn-ok" onclick="onSuccess()">✓ 성공 <span style="opacity:.7;font-size:13px">(Y)</span></button>
-          <button class="btn btn-fail" onclick="onFail()">✕ 실패 <span style="opacity:.7;font-size:13px">(N)</span></button>
+          <button class="btn btn-ok" onclick="onSuccess()">⭕ 성공 <span style="opacity:.7;font-size:13px">(Y)</span></button>
+          <button class="btn btn-fail" onclick="onFail()">❌ 실패 <span style="opacity:.7;font-size:13px">(N)</span></button>
         </div>`;
     }
   }
@@ -908,8 +908,15 @@ function tallyVotes(){
   const readerIdx = (S.readerIdx!=null)? S.readerIdx : S.current;
   const voters = S.players.map((_,i)=>i).filter(i=>i!==readerIdx);
   const ok = voters.filter(i=>S.votes[i]==='ok').length;
-  if(ok*2 > voters.length) onSuccess();   // 과반 성공, 동점 이하=실패
-  else onFail();
+  const fail = voters.length - ok;
+  let success;
+  if(ok>fail) success=true;
+  else if(fail>ok) success=false;
+  else {  // O·X 동수 → 오른쪽 사람(심판)의 표를 따름
+    const right=(readerIdx+1)%S.players.length;
+    success = S.votes[right]==='ok';
+  }
+  if(success) onSuccess(); else onFail();
 }
 
 /* ---------- 카드 선택 (fail 시 실패한 단어) ---------- */
