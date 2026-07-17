@@ -6,21 +6,21 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<title>스위스 사는 스미스씨</title>
+<title>옥정동 사는 삼척 김씨</title>
 <style>
   :root{
-    --red:#e5392b;        /* 스위스 레드(다크 배경용 약간 밝게) */
-    --red-dark:#b3271b;
-    --ink:#1f2733;        /* 밝은 표면(카드/패널) 위 글자 */
-    --fg:#e9e7e1;         /* 어두운 배경 위 글자 */
-    --muted:#9aa0ac;      /* 어두운 배경 위 보조 텍스트 */
-    --paper:#12141a;      /* 앱 배경 (다크) */
-    --paper2:#232833;
-    --line:#3a4150;
-    --gold:#e6b24a;
-    --ok:#33a866;
-    --card:#faf7ef;       /* 카드/패널은 밝게 유지 → 다크 배경에서 카드가 확 보임 */
-    --shadow:0 6px 20px rgba(0,0,0,.5);
+    --red:#d52b1e;        /* 스위스 레드 */
+    --red-dark:#a81f16;
+    --ink:#1f2733;        /* 기본 글자(진한 잉크) */
+    --fg:#1f2733;         /* 배경 위 글자 = 잉크 (라이트 테마) */
+    --muted:#8a8474;
+    --paper:#f2ede3;      /* 앱 배경(따뜻한 크림, 카드보다 살짝 어둡게) */
+    --paper2:#e6dfd0;
+    --line:#d9d3c7;
+    --gold:#e0a63a;
+    --ok:#2e8b57;
+    --card:#fffdf8;       /* 카드/패널(밝음) */
+    --shadow:0 4px 14px rgba(0,0,0,.14);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;height:100%;}
@@ -235,6 +235,10 @@
   .vbtn{width:42px;height:42px;border-radius:10px;border:2px solid var(--line);background:#fff;font-size:19px;font-weight:900;color:#b7b0a2;}
   .vbtn.ok.sel{background:var(--ok);color:#fff;border-color:var(--ok);}
   .vbtn.no.sel{background:var(--red);color:#fff;border-color:var(--red);}
+  /* 좌석 앞 판정 버튼 */
+  .votebtns{display:flex;gap:8px;justify-content:center;margin-top:6px;}
+  .votebtns .vbtn{width:40px;height:40px;}
+  .readingtag{margin-top:6px;font-size:12px;font-weight:800;color:var(--red);}
 
   /* 전체화면 성공/실패 연출 */
   .result{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;animation:rIn .22s ease-out;}
@@ -251,8 +255,8 @@
 
 <!-- ============ 홈 ============ -->
 <div id="home" class="screen home">
-  <div class="brand"><span class="cross">✚</span><span class="kr">스위스 사는 스미스씨</span></div>
-  <div class="brand en">Mr. Smith Living in Swiss</div>
+  <div class="brand"><span class="cross">✚</span><span class="kr">옥정동 사는 삼척 김씨</span></div>
+  <div class="brand en">Mr. Kim, Living in Okjeong-dong</div>
   <div class="tag">혀가 꼬이는 단어를 실수 없이 빨리 읽어라 · 2–6명</div>
 
   <div class="panel">
@@ -676,9 +680,22 @@ function renderPlayers(jIdx){
     const warn=p.penalty.length>=S.endScore-1;
     const pips=p.penalty.map(()=> '<div class="pip'+(warn?' warn':'')+'"></div>').join('');
     const av = p.photo?`<div class="plav" style="background-image:url(${p.photo});border-color:${col.b}"></div>`:'';
+    // 다수결: 각 좌석(캐릭터) 앞에 판정 버튼 — 읽는 사람 제외
+    let voteHtml='';
+    if(S.phase==='reading' && S.judgeMode==='majority'){
+      const rd=(S.readerIdx!=null)?S.readerIdx:S.current;
+      if(i===rd){ voteHtml='<div class="readingtag">읽는 중…</div>'; }
+      else {
+        const v=S.votes[i];
+        voteHtml=`<div class="votebtns">
+          <button class="vbtn ok${v==='ok'?' sel':''}" onclick="castVote(${i},'ok')">✓</button>
+          <button class="vbtn no${v==='fail'?' sel':''}" onclick="castVote(${i},'fail')">✕</button>
+        </div>`;
+      }
+    }
     d.innerHTML=`${av}<div class="nm" style="color:${col.b}">${escapeHtml(p.name)}</div>${role}
       <div class="pts">벌점 <b>${p.penalty.length}</b>/${S.endScore}</div>
-      <div class="pips">${pips}</div>`;
+      <div class="pips">${pips}</div>${voteHtml}`;
     document.getElementById('seat_'+edge).appendChild(d);
   });
 }
@@ -702,18 +719,9 @@ function renderControls(){
     const who = (S.readerIdx!=null)? `<b>${escapeHtml(reader)}</b>님(대신)이` : `<b>${escapeHtml(cur)}</b>님이`;
     if(S.judgeMode==='majority'){
       const readerIdx=(S.readerIdx!=null)?S.readerIdx:S.current;
-      const voters=S.players.map((p,i)=>({p,i})).filter(o=>o.i!==readerIdx);
-      const voted=voters.filter(o=>S.votes[o.i]).length;
-      const rows=voters.map(o=>{
-        const col=o.p.color||PCOLORS[o.i%PCOLORS.length]; const v=S.votes[o.i];
-        return `<div class="voterow" style="border-color:${col.b}">
-          <span class="vname" style="color:${col.b}">${escapeHtml(o.p.name)}</span>
-          <button class="vbtn ok${v==='ok'?' sel':''}" onclick="castVote(${o.i},'ok')">✓</button>
-          <button class="vbtn no${v==='fail'?' sel':''}" onclick="castVote(${o.i},'fail')">✕</button>
-        </div>`;
-      }).join('');
-      el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 읽기 (×2·×3 반복) · <b>읽는 사람 빼고 전원</b> 판정, 동점=실패</div>
-        <div class="votegrid">${rows}</div>
+      const voters=S.players.map((p,i)=>i).filter(i=>i!==readerIdx);
+      const voted=voters.filter(i=>S.votes[i]).length;
+      el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 읽기 (×2·×3 반복) · <b>각자 자기 앞 버튼</b>으로 판정 (읽는 사람 제외, 동점=실패)</div>
         <button class="btn btn-primary" ${voted<voters.length?'disabled style="opacity:.45"':''} onclick="tallyVotes()">판정 완료 (${voted}/${voters.length})</button>`;
     } else {
       el.innerHTML=`<div class="hint">${who} <b>${dir}</b> 순서대로 모두 읽습니다. (×2·×3 표시는 그만큼 반복!)<br><b>${escapeHtml(judge)}</b>님이 판정하세요.</div>
