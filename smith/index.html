@@ -408,7 +408,15 @@ function loadPlayers(){
     const d=JSON.parse(localStorage.getItem(LS_PLAYERS)||'null');
     if(d){ if(d.count>=2&&d.count<=6) playerCount=d.count;
       playerNames=Array.isArray(d.names)?d.names:[];
-      playerPhotos=Array.isArray(d.photos)?d.photos:[]; }
+      // 옛 캐릭터 이미지 경로(chars/…)는 버리고 이모지/업로드사진만 유지
+      playerPhotos=(Array.isArray(d.photos)?d.photos:[]).map(v=>{
+        if(typeof v!=='string') return null;
+        if(v.indexOf('data:')===0) return v;   // 업로드 사진
+        if(v.indexOf('/')>=0) return null;      // 옛 캐릭터 경로 → 제거
+        return v;                               // 이모지
+      });
+      savePlayers();
+    }
   }catch(e){}
 }
 // 아바타 이모지 (가족 + 동물). 업로드 사진은 dataURL 로 구분.
