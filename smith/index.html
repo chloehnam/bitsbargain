@@ -57,6 +57,7 @@
   .stepper button{width:48px;height:48px;border-radius:50%;border:2px solid var(--line);background:#fff;font-size:24px;font-weight:800;color:var(--red);display:flex;align-items:center;justify-content:center;}
   .stepper button:active{background:#fff2f0;}
   .stepper b{font-size:30px;font-weight:800;min-width:44px;text-align:center;}
+  .seatprev,.avatarpick,.amodal,.stepper{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
   .seatprev{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:8px;margin-bottom:8px;}
   .scEdge{display:flex;gap:5px;align-items:center;justify-content:center;flex-wrap:wrap;min-height:28px;}
   .scMid{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:74px;}
@@ -190,6 +191,15 @@
   .showdown b{color:var(--red);}
   .footer{margin-top:auto;padding-top:10px;text-align:center;font-size:11px;color:#c3bba9;}
 
+  /* 게임 기록 테이블 */
+  .recwrap{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
+  .rectable{width:100%;border-collapse:collapse;font-size:14px;color:var(--ink);}
+  .rectable th,.rectable td{padding:11px 8px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;}
+  .rectable th{position:sticky;top:0;background:var(--paper2);color:#6b6555;font-size:12px;font-weight:800;}
+  .rectable td.win{font-weight:800;color:var(--red);}
+  .rectable tr:last-child td{border-bottom:none;}
+  .recempty{text-align:center;color:var(--muted);padding:36px 10px;}
+
   /* ===== 테이블(4면 좌석) 레이아웃 ===== */
   .gtopbar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
   .minibtn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:12px;font-weight:800;color:var(--ink);box-shadow:var(--shadow);white-space:nowrap;}
@@ -283,6 +293,7 @@
     <button class="btn btn-sub" onclick="rotateHomeSeats()">↻ 자리 회전</button>
     <button class="btn btn-primary mt" onclick="startGame()">게임 시작</button>
     <button class="link" style="display:block;margin:8px auto 0" onclick="openEditor()">✎ 단어 카드 편집 (<span id="wcount">0</span>장)</button>
+    <button class="link" style="display:block;margin:2px auto 0" onclick="showRecords()">📋 게임 기록</button>
   </div>
   <div class="footer">Pass &amp; Play · 심판(오른쪽 사람)이 성공/실패를 눌러 진행</div>
 </div>
@@ -297,6 +308,16 @@
     <button class="btn btn-sub" onclick="resetWords()">기본값 복원</button>
     <button class="btn btn-primary" onclick="saveWords()">저장</button>
   </div>
+</div>
+
+<!-- ============ 게임 기록 ============ -->
+<div id="records" class="screen hidden">
+  <div class="gtopbar">
+    <div class="gstatus" style="text-align:left;font-size:16px;font-weight:800">📋 게임 기록</div>
+    <button class="minibtn" onclick="clearRecords()">전체 삭제</button>
+    <button class="minibtn" onclick="backHomeFromRecords()">닫기</button>
+  </div>
+  <div class="recwrap"><table class="rectable" id="recTable"></table></div>
 </div>
 
 <!-- ============ 게임 ============ -->
@@ -328,6 +349,7 @@
   <div class="rank" id="rank"></div>
   <div id="showdown"></div>
   <button class="btn btn-primary mt" style="max-width:420px" onclick="location.reload()">새 게임</button>
+  <button class="link" style="margin-top:8px" onclick="showRecords()">📋 게임 기록 보기</button>
 </div>
 
 <div id="avatarModal" class="amodal hidden">
@@ -369,7 +391,22 @@ function randArrow(){ return Math.random()<0.5?'left':'right'; }
 
 /* ---------- 홈 렌더 ---------- */
 let playerCount = 3;
+let playerNames = [];    // 플레이어 인덱스 → 이름 (localStorage 저장)
 let playerPhotos = [];   // 플레이어 인덱스 → 아바타(캐릭터 경로 or 사진 dataURL)
+const LS_PLAYERS='msmith_players';
+function savePlayers(){
+  try{ localStorage.setItem(LS_PLAYERS, JSON.stringify({
+    count:playerCount, names:playerNames.slice(0,playerCount), photos:playerPhotos.slice(0,playerCount)
+  })); }catch(e){}
+}
+function loadPlayers(){
+  try{
+    const d=JSON.parse(localStorage.getItem(LS_PLAYERS)||'null');
+    if(d){ if(d.count>=2&&d.count<=6) playerCount=d.count;
+      playerNames=Array.isArray(d.names)?d.names:[];
+      playerPhotos=Array.isArray(d.photos)?d.photos:[]; }
+  }catch(e){}
+}
 const CHAR_AVATARS=['chars/char1_red.jpg','chars/char2_blue.jpg','chars/char3_green.jpg','chars/char4_orange.jpg','chars/char5_purple.jpg','chars/char6_teal.jpg'];
 let avatarFor=null;
 function openAvatar(i){
@@ -378,7 +415,7 @@ function openAvatar(i){
     CHAR_AVATARS.map(p=>`<div class="achip" style="background-image:url(${p})" onclick="selectChar('${p}')"></div>`).join('');
   document.getElementById('avatarModal').classList.remove('hidden');
 }
-function selectChar(p){ playerPhotos[avatarFor]=p; closeAvatar(); renderHome(); }
+function selectChar(p){ playerPhotos[avatarFor]=p; savePlayers(); closeAvatar(); renderHome(); }
 function onAvatarUpload(e){ pickPhoto(avatarFor, e.target.files[0]); closeAvatar(); }
 function closeAvatar(){ document.getElementById('avatarModal').classList.add('hidden'); }
 function pickPhoto(i, file){
@@ -392,7 +429,7 @@ function pickPhoto(i, file){
       const sc=Math.max(s/img.width, s/img.height), w=img.width*sc, h=img.height*sc;
       ctx.drawImage(img,(s-w)/2,(s-h)/2,w,h);
       playerPhotos[i]=c.toDataURL('image/jpeg',0.85);
-      renderHome();
+      savePlayers(); renderHome();
     };
     img.src=r.result;
   };
@@ -440,11 +477,10 @@ function renderHome(){
   for(let n=2;n<=6;n++){
     const b=document.createElement('button'); b.textContent=n;
     if(n===playerCount) b.className='sel';
-    b.onclick=()=>{ playerCount=n; renderHome(); };
+    b.onclick=()=>{ playerCount=n; savePlayers(); renderHome(); };
     cr.appendChild(b);
   }
   const nl=document.getElementById('nameList');
-  const prev={}; nl.querySelectorAll('input.name-in').forEach((el,i)=>prev[i]=el.value);
   nl.innerHTML='';
   for(let i=0;i<playerCount;i++){
     const row=document.createElement('div'); row.className='namerow';
@@ -454,8 +490,8 @@ function renderHome(){
     const inp=document.createElement('input');
     inp.className='name-in'; inp.type='text'; inp.maxLength=10;
     inp.placeholder=`플레이어 ${i+1}`;
-    inp.value = prev[i]!==undefined?prev[i]:'';
-    inp.oninput=renderSeatPreview;
+    inp.value = playerNames[i]||'';
+    inp.oninput=()=>{ playerNames[i]=inp.value; savePlayers(); renderSeatPreview(); };
     row.appendChild(av); row.appendChild(inp);
     nl.appendChild(row);
   }
@@ -521,6 +557,7 @@ function startGame(){
   S={
     endScore,
     judgeMode,
+    startedAt: Date.now(),
     votes:{},
     baseSeats: seatsBase(names.length),
     seatRot: homeSeatRot,
@@ -968,6 +1005,7 @@ function gameOver(){
   const ranked=S.players.map((p,i)=>({...p,i,score:p.penalty.length})).sort((a,b)=>a.score-b.score);
   const min=ranked[0].score;
   const winners=ranked.filter(p=>p.score===min);
+  saveRecord(winners.map(w=>w.name).join(', '));
 
   const rk=document.getElementById('rank'); rk.innerHTML='';
   ranked.forEach((p,pos)=>{
@@ -993,6 +1031,31 @@ function gameOver(){
 
 function confirmQuit(){ if(confirm('게임을 나가고 처음으로 돌아갈까요?')) location.reload(); }
 
+/* ---------- 게임 기록 ---------- */
+const LS_RECORDS='msmith_records';
+function loadRecords(){ try{ return JSON.parse(localStorage.getItem(LS_RECORDS)||'[]'); }catch(e){ return []; } }
+function saveRecord(winnerNames){
+  const recs=loadRecords();
+  const sec=S.startedAt? Math.max(0,Math.round((Date.now()-S.startedAt)/1000)):0;
+  const dur=`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+  const d=new Date();
+  const p=n=>String(n).padStart(2,'0');
+  const date=`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  recs.push({ no:recs.length+1, date, dur, winner:winnerNames, limit:S.endScore, players:S.players.map(x=>x.name).join(', ') });
+  try{ localStorage.setItem(LS_RECORDS, JSON.stringify(recs)); }catch(e){}
+}
+function renderRecords(){
+  const recs=loadRecords().slice().reverse();
+  const t=document.getElementById('recTable');
+  if(!recs.length){ t.innerHTML='<tr><td class="recempty">아직 기록이 없습니다</td></tr>'; return; }
+  let h='<tr><th>회차</th><th>날짜</th><th>시간</th><th>승리자</th><th>벌점리밋</th></tr>';
+  recs.forEach(r=>{ h+=`<tr><td>${r.no}</td><td>${escapeHtml(r.date)}</td><td>${escapeHtml(r.dur)}</td><td class="win">🏆 ${escapeHtml(r.winner)}</td><td>${r.limit}</td></tr>`; });
+  t.innerHTML=h;
+}
+function showRecords(){ document.getElementById('home').classList.add('hidden'); document.getElementById('over').classList.add('hidden'); document.getElementById('records').classList.remove('hidden'); renderRecords(); }
+function backHomeFromRecords(){ document.getElementById('records').classList.add('hidden'); document.getElementById('home').classList.remove('hidden'); renderHome(); }
+function clearRecords(){ if(confirm('모든 게임 기록을 삭제할까요?')){ try{ localStorage.removeItem(LS_RECORDS); }catch(e){} renderRecords(); } }
+
 /* ---------- 단축키 ---------- */
 document.addEventListener('keydown',e=>{
   if(!S) return;
@@ -1008,6 +1071,7 @@ document.addEventListener('keydown',e=>{
 /* ---------- util ---------- */
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
+loadPlayers();
 renderHome();
 </script>
 </body>
