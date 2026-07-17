@@ -68,6 +68,20 @@
   .scChip.e-right{transform:rotate(-90deg);}
   .scChip.sel{outline:3px solid var(--ink);outline-offset:1px;}
   .name-in{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;margin-bottom:8px;background:#fff;}
+  .namerow{display:flex;gap:8px;align-items:center;}
+  .namerow .name-in{margin-bottom:8px;flex:1;}
+  .avatarpick{position:relative;width:46px;height:46px;flex:0 0 auto;border-radius:50%;border:2px dashed var(--line);background:#fff center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--red);cursor:pointer;overflow:hidden;margin-bottom:8px;}
+  .avatarpick.has{border-style:solid;border-color:var(--ok);}
+  .avatarpick span{font-size:22px;font-weight:900;}
+  .hiddenfile{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;}
+  .plav{width:46px;height:46px;border-radius:50%;background:center/cover no-repeat #fff;margin:0 auto 3px;border:2px solid rgba(0,0,0,.12);}
+  .scav{display:inline-block;width:16px;height:16px;border-radius:50%;background:center/cover no-repeat #fff;vertical-align:middle;margin-right:4px;}
+  .amodal{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .amodal-box{background:var(--card);color:var(--ink);border-radius:18px;padding:18px;width:100%;max-width:360px;box-shadow:var(--shadow);text-align:center;}
+  .amodal-title{font-weight:800;margin-bottom:12px;font-size:16px;}
+  .amodal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .achip{padding-top:100%;border-radius:50%;background:#fff center/cover no-repeat;border:2px solid var(--line);cursor:pointer;}
+  .achip:active{transform:scale(.94);}
   .btn{display:block;width:100%;padding:15px;border-radius:12px;font-size:17px;font-weight:800;}
   .btn-primary{background:var(--red);color:#fff;box-shadow:var(--shadow);}
   .btn-primary:active{background:var(--red-dark);}
@@ -310,6 +324,15 @@
   <button class="btn btn-primary mt" style="max-width:420px" onclick="location.reload()">새 게임</button>
 </div>
 
+<div id="avatarModal" class="amodal hidden">
+  <div class="amodal-box">
+    <div class="amodal-title">캐릭터 선택</div>
+    <div class="amodal-grid" id="avatarGrid"></div>
+    <label class="btn btn-sub" style="margin-bottom:8px">📷 내 사진 올리기<input type="file" accept="image/*" class="hiddenfile" onchange="onAvatarUpload(event)"></label>
+    <button class="link" onclick="closeAvatar()">닫기</button>
+  </div>
+</div>
+
 <div id="toastHost"></div>
 
 <script src="words.js"></script>
@@ -340,6 +363,35 @@ function randArrow(){ return Math.random()<0.5?'left':'right'; }
 
 /* ---------- 홈 렌더 ---------- */
 let playerCount = 3;
+let playerPhotos = [];   // 플레이어 인덱스 → 아바타(캐릭터 경로 or 사진 dataURL)
+const CHAR_AVATARS=['chars/char1_red.jpg','chars/char2_blue.jpg','chars/char3_green.jpg','chars/char4_orange.jpg','chars/char5_purple.jpg','chars/char6_teal.jpg'];
+let avatarFor=null;
+function openAvatar(i){
+  avatarFor=i;
+  document.getElementById('avatarGrid').innerHTML =
+    CHAR_AVATARS.map(p=>`<div class="achip" style="background-image:url(${p})" onclick="selectChar('${p}')"></div>`).join('');
+  document.getElementById('avatarModal').classList.remove('hidden');
+}
+function selectChar(p){ playerPhotos[avatarFor]=p; closeAvatar(); renderHome(); }
+function onAvatarUpload(e){ pickPhoto(avatarFor, e.target.files[0]); closeAvatar(); }
+function closeAvatar(){ document.getElementById('avatarModal').classList.add('hidden'); }
+function pickPhoto(i, file){
+  if(!file) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      const s=240, c=document.createElement('canvas'); c.width=s; c.height=s;
+      const ctx=c.getContext('2d');
+      const sc=Math.max(s/img.width, s/img.height), w=img.width*sc, h=img.height*sc;
+      ctx.drawImage(img,(s-w)/2,(s-h)/2,w,h);
+      playerPhotos[i]=c.toDataURL('image/jpeg',0.85);
+      renderHome();
+    };
+    img.src=r.result;
+  };
+  r.readAsDataURL(file);
+}
 let endScore = 6;
 let homeSeatRot = 0;
 let homeSeatOrder = [];   // 시계방향 위치 p → 원래 플레이어 인덱스 (탭-스왑으로 재배치)
@@ -362,9 +414,12 @@ function renderSeatPreview(){
   const z={top:[],bottom:[],left:[],right:[]};
   for(let p=0;p<n;p++){
     const person=homeSeatOrder[p];
-    z[rotEdge(base[p],homeSeatRot)].push({p, nm:names[person], c:PCOLORS[person%PCOLORS.length]});
+    z[rotEdge(base[p],homeSeatRot)].push({p, nm:names[person], c:PCOLORS[person%PCOLORS.length], photo:playerPhotos[person]});
   }
-  const chips=(arr,edge)=>arr.map(o=>`<span class="scChip e-${edge}${selSeatPos===o.p?' sel':''}" style="border-color:${o.c.b};color:${o.c.b};background:${o.c.bg}" onclick="onSeatTap(${o.p})">${escapeHtml(o.nm)}</span>`).join('');
+  const chips=(arr,edge)=>arr.map(o=>{
+    const pic=o.photo?`<span class="scav" style="background-image:url(${o.photo})"></span>`:'';
+    return `<span class="scChip e-${edge}${selSeatPos===o.p?' sel':''}" style="border-color:${o.c.b};color:${o.c.b};background:${o.c.bg}" onclick="onSeatTap(${o.p})">${pic}${escapeHtml(o.nm)}</span>`;
+  }).join('');
   document.getElementById('seatPrev').innerHTML=`
     <div class="scEdge scTop">${chips(z.top,'top')}</div>
     <div class="scMid">
@@ -383,15 +438,20 @@ function renderHome(){
     cr.appendChild(b);
   }
   const nl=document.getElementById('nameList');
-  const prev={}; nl.querySelectorAll('input').forEach((el,i)=>prev[i]=el.value);
+  const prev={}; nl.querySelectorAll('input.name-in').forEach((el,i)=>prev[i]=el.value);
   nl.innerHTML='';
   for(let i=0;i<playerCount;i++){
+    const row=document.createElement('div'); row.className='namerow';
+    const av=document.createElement('div'); av.className='avatarpick'+(playerPhotos[i]?' has':'');
+    if(playerPhotos[i]) av.style.backgroundImage=`url(${playerPhotos[i]})`; else av.innerHTML='<span>＋</span>';
+    av.onclick=()=>openAvatar(i);
     const inp=document.createElement('input');
     inp.className='name-in'; inp.type='text'; inp.maxLength=10;
     inp.placeholder=`플레이어 ${i+1}`;
     inp.value = prev[i]!==undefined?prev[i]:'';
     inp.oninput=renderSeatPreview;
-    nl.appendChild(inp);
+    row.appendChild(av); row.appendChild(inp);
+    nl.appendChild(row);
   }
   document.getElementById('wcount').textContent=getWords().length;
   renderSeatPreview();
@@ -451,7 +511,7 @@ function startGame(){
 
   // 좌석(시계방향 위치) 순서대로 플레이어 정렬 → 턴/심판이 실제 앉은 순서를 따름. 색은 사람에 고정.
   if(homeSeatOrder.length!==names.length) homeSeatOrder=[...Array(names.length).keys()];
-  const seated = homeSeatOrder.map(idx=>({ name:names[idx], color:PCOLORS[idx%PCOLORS.length], penalty:[] }));
+  const seated = homeSeatOrder.map(idx=>({ name:names[idx], color:PCOLORS[idx%PCOLORS.length], photo:playerPhotos[idx]||null, penalty:[] }));
   S={
     endScore,
     judgeMode,
@@ -615,7 +675,8 @@ function renderPlayers(jIdx){
     else role='<div class="role">&nbsp;</div>';
     const warn=p.penalty.length>=S.endScore-1;
     const pips=p.penalty.map(()=> '<div class="pip'+(warn?' warn':'')+'"></div>').join('');
-    d.innerHTML=`<div class="nm" style="color:${col.b}">${escapeHtml(p.name)}</div>${role}
+    const av = p.photo?`<div class="plav" style="background-image:url(${p.photo});border-color:${col.b}"></div>`:'';
+    d.innerHTML=`${av}<div class="nm" style="color:${col.b}">${escapeHtml(p.name)}</div>${role}
       <div class="pts">벌점 <b>${p.penalty.length}</b>/${S.endScore}</div>
       <div class="pips">${pips}</div>`;
     document.getElementById('seat_'+edge).appendChild(d);
