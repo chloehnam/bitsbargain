@@ -110,12 +110,12 @@
   .wcard.stackable:active{transform:scale(.96);}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(213,43,30,.4),var(--shadow);}50%{box-shadow:0 0 0 7px rgba(213,43,30,0),var(--shadow);}}
   /* 카드 놓을 자리 (점선 드롭존) */
-  .dropzone{flex:0 0 auto;width:84px;height:236px;border:2.5px dashed var(--red);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--red);background:rgba(213,43,30,.05);cursor:pointer;transition:background .12s,transform .1s;}
+  .dropzone{position:relative;flex:0 0 auto;width:84px;height:236px;border:2.5px dashed var(--red);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--red);background:rgba(213,43,30,.05);cursor:pointer;transition:background .12s,transform .1s;}
   .dropzone:active{transform:scale(.94);background:rgba(213,43,30,.14);}
   .dropzone .plus{font-size:30px;font-weight:900;line-height:1;}
   .dropzone .zl{font-size:11px;font-weight:800;text-align:center;line-height:1.2;}
   /* 놓을 자리 번호(숫자키) 뱃지 */
-  .pnum{position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);min-width:24px;height:24px;padding:0 6px;border-radius:13px;background:var(--ink);color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);z-index:4;border:2px solid #fff;}
+  .pnum{position:absolute;top:-14px;left:50%;transform:translateX(-50%);min-width:28px;height:28px;padding:0 7px;border-radius:14px;background:var(--red);color:#fff;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);z-index:5;border:2px solid #fff;}
   /* 덮인 카드 = 뒤로 쌓인 카드 더미처럼 표시 */
   .wcard .under{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--card);border:1.5px solid var(--line);border-radius:16px;z-index:-1;box-shadow:var(--shadow);}
   .wcard .under.u1{transform:translate(6px,-6px);}
@@ -464,7 +464,8 @@ function makeCard(slot,i,ordMap){
   const depth=slot.cards.length;
   // 뒤에 쌓인 카드(최대 3겹까지 시각화)
   for(let d=1; d<Math.min(depth,4); d++){ const u=document.createElement('div'); u.className='under u'+d; c.appendChild(u); }
-  const ord=document.createElement('div'); ord.className='ord'; ord.textContent=ordMap[i]; c.appendChild(ord);
+  // 놓기(placing) 중엔 읽기순서 뱃지 숨김 — 놓을자리 번호(pnum)와 헷갈리지 않게
+  if(S.phase!=='placing'){ const ord=document.createElement('div'); ord.className='ord'; ord.textContent=ordMap[i]; c.appendChild(ord); }
   if(slot.repeat>1){ const r=document.createElement('div'); r.className='rep'; r.textContent='×'+slot.repeat; c.appendChild(r); }
   const fs=fitFont(top.word)+'px';
   const w1=document.createElement('div'); w1.className='word flip'; w1.textContent=top.word; w1.style.fontSize=fs; c.appendChild(w1); // 맞은편용(180°)
