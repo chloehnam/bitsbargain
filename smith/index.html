@@ -654,8 +654,7 @@ function makeCard(slot,i,ordMap){
   const depth=slot.cards.length;
   // 뒤에 쌓인 카드(최대 3겹까지 시각화)
   for(let d=1; d<Math.min(depth,4); d++){ const u=document.createElement('div'); u.className='under u'+d; c.appendChild(u); }
-  // 놓기(placing) 중엔 읽기순서 뱃지 숨김 — 놓을자리 번호(pnum)와 헷갈리지 않게
-  if(S.phase!=='placing'){ const ord=document.createElement('div'); ord.className='ord'; ord.textContent=ordMap[i]; c.appendChild(ord); }
+  // 읽기순서 번호는 표시하지 않음(방향 화살표로 충분). 놓기 단계의 자리번호(pnum)만 사용.
   if(slot.repeat>1){ const r=document.createElement('div'); r.className='rep'; r.textContent='×'+slot.repeat; c.appendChild(r); }
   const fs=fitFont(top.word)+'px';
   const w1=document.createElement('div'); w1.className='word flip'; w1.textContent=top.word; w1.style.fontSize=fs; c.appendChild(w1); // 맞은편용(180°)
