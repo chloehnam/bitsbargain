@@ -472,3 +472,27 @@
   .tabbar button{flex:1;padding:14px 8px;font-size:13.5px}
   .prep{padding:60px 20px}
 }
+
+/* 판매 채널 버튼 (쿠팡 / 네이버 스마트스토어) — 실제 동작하는 주문 경로라 최상위 위계 */
+.shop-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.shop-row.go{margin:22px auto 0;max-width:600px}
+.btn-shop{
+  justify-content:center;padding:17px 16px;font-size:15px;font-weight:800;
+  border-radius:99px;color:#fff;transition:.18s;
+}
+.btn-shop.coupang{background:#c8102e;box-shadow:0 6px 18px rgba(200,16,46,.24)}
+.btn-shop.coupang:hover{background:#a80d26;transform:translateY(-2px)}
+.btn-shop.naver{background:#03c75a;box-shadow:0 6px 18px rgba(3,199,90,.24)}
+.btn-shop.naver:hover{background:#02a44b;transform:translateY(-2px)}
+
+/* 준비중인 보조 액션은 한 단계 낮게 */
+.buy-row.sub{margin-top:10px}
+.buy-row.sub .btn{padding:12px 16px;font-size:13.5px}
+.buy-row.sub .btn-like{flex:0 0 48px}
+.buy-row.sub .btn-cart{border-width:1px;border-color:var(--line);color:var(--muted);font-weight:700}
+.buy-row.sub .btn-cart:hover{background:var(--gray);border-color:var(--line)}
+
+@media(max-width:560px){
+  .shop-row{grid-template-columns:1fr}
+  .btn-shop{font-size:14px}
+}

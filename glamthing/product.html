@@ -98,6 +98,7 @@
         <h5>브랜드</h5>
         <a href="index.html#story">브랜드 스토리</a>
         <a href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">네이버 스마트스토어</a>
+        <a href="https://www.coupang.com/np/search?q=%EA%B8%80%EB%9E%A8%EB%9D%B5" target="_blank" rel="noopener">쿠팡 스토어</a>
         <a href="https://www.bitsbargain.com">비츠바겐 홈</a>
         <a href="#" data-soon="입점·제휴 문의">입점·제휴 문의</a>
       </div>
@@ -195,19 +196,23 @@ if (!item) {
         </dl>
 
         <div class="soonbox">
-          <strong>온라인 주문 기능 준비 중입니다</strong>
+          <strong>네이버 스마트스토어와 쿠팡에서 주문하실 수 있습니다</strong>
           <p>
             글램띵 자체 스토어의 옵션 선택·장바구니·결제 기능은 준비 중입니다.
-            지금은 네이버 스마트스토어에서 구매하실 수 있습니다.
+            아래 채널에서 바로 주문하실 수 있습니다.
           </p>
         </div>
 
-        <div class="buy-row">
+        <div class="shop-row">
+          <a class="btn btn-shop coupang" href="https://www.coupang.com/vp/products/${item.id}" target="_blank" rel="noopener">쿠팡에서 주문 →</a>
+          <a class="btn btn-shop naver" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">스마트스토어에서 주문 →</a>
+        </div>
+
+        <div class="buy-row sub">
           <button class="btn btn-like" id="likeBtn" aria-label="찜하기">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.5s-7.5-4.6-7.5-9.7a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8c0 5.1-7.5 9.7-7.5 9.7z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.5s-7.5-4.6-7.5-9.7a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8c0 5.1-7.5 9.7-7.5 9.7z"/></svg>
           </button>
           <button class="btn btn-cart" data-soon="장바구니">장바구니</button>
-          <a class="btn btn-buy" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">스마트스토어에서 구매 →</a>
         </div>
       </div>
     </div>
@@ -226,9 +231,16 @@ if (!item) {
         <h3>상세 정보 준비 중입니다</h3>
         <p>
           더 좋은 상세 페이지로 찾아뵙기 위해 준비하고 있습니다.<br>
-          지금은 네이버 스마트스토어에서 상세 정보를 확인하실 수 있습니다.
+          지금은 네이버 스마트스토어와 쿠팡에서 상세 정보를 확인하실 수 있습니다.
         </p>
-        <a class="btn btn-primary go" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">스마트스토어에서 상세보기 →</a>
+        <div class="shop-row go">
+          <a class="btn btn-shop coupang" href="https://www.coupang.com/vp/products/${item.id}" target="_blank" rel="noopener">
+            쿠팡에서 상세보기 →
+          </a>
+          <a class="btn btn-shop naver" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">
+            스마트스토어에서 상세보기 →
+          </a>
+        </div>
       </div>
     </div>
   </section>
