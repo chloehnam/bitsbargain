@@ -1,0 +1,9 @@
+# macOS Finder 부산물 — 폴더 보기설정 + 파일명 목록이 담김.
+# public GitHub Pages 저장소라 커밋되면 www.bitsbargain.com/.DS_Store 로 노출됨.
+.DS_Store
+._*
+
+# 실수로 흘러들어온 DB/백업 파일 방지
+*.db
+*.db-shm
+*.db-wal
