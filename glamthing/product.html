@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 상세 — 글램띵 Glamthing</title>
+<meta name="description" content="당신을 빛나게 하는 모든 것들. 글램띵(Glamthing) 공식 브랜드스토어.">
+<link rel="icon" type="image/png" href="assets/badge-192.png">
+<meta property="og:title" content="글램띵 Glamthing 공식 브랜드스토어">
+<meta property="og:image" content="assets/badge-512.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══ UTILITY ══ -->
+<div class="util">
+  <div class="wrap">
+    <div class="left">
+      <span class="desc">글램띵 공식 브랜드스토어 · 운영 <b style="color:#fff">비츠바겐(Bitsbargain)</b></span>
+    </div>
+    <nav>
+      <a href="#" data-soon="스토어찜">스토어찜</a><a href="#" data-soon="주문조회">주문조회</a><a href="#" data-soon="고객센터">고객센터</a><a href="#" data-soon="로그인·회원가입">로그인</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="wrap head">
+    <a class="brand" href="index.html">
+      <img class="badge" src="assets/badge-512.png" alt="글램띵 로고">
+      <span class="marks">
+        <img src="assets/wordmark-violet.png" alt="Glamthing">
+        <span class="sub">BY BITSBARGAIN</span>
+      </span>
+    </a>
+    <form class="search" onsubmit="event.preventDefault();soon('검색')">
+      <input type="search" placeholder="글램띵에서 무엇을 찾으세요?" aria-label="상품 검색">
+      <button type="submit" aria-label="검색">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      </button>
+    </form>
+    <div class="icons">
+      <button aria-label="찜한 상품" onclick="soon('찜 목록')">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 20.5s-7.5-4.6-7.5-9.7a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8c0 5.1-7.5 9.7-7.5 9.7z"/></svg>
+      </button>
+      <button aria-label="장바구니" onclick="soon('장바구니')">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16l-1.4 10.4a2 2 0 0 1-2 1.6H7.4a2 2 0 0 1-2-1.6z"/><path d="M9 6V4.8A3 3 0 0 1 12 2a3 3 0 0 1 3 2.8V6"/></svg>
+      </button>
+      <button aria-label="마이페이지" onclick="soon('마이페이지')">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ GNB ══ -->
+<div class="gnb">
+  <div class="wrap">
+    <a href="index.html">홈</a>
+    <a href="index.html#best" class="hot">베스트</a>
+    <a href="index.html#new">신상품</a>
+    <a href="index.html#all">파티·이벤트</a>
+    <a href="index.html#all">키링·잡화</a>
+    <a href="index.html#all">패션</a>
+    <a href="index.html#all">리빙·주방</a>
+    <a href="index.html#all">수영·레저</a>
+    <a href="index.html#promo">기획전</a>
+    <a href="index.html#review">리뷰</a>
+    <a href="index.html#story">브랜드 스토리</a>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="assets/wordmark-white.png" alt="Glamthing">
+        <p>
+          글램띵(Glamthing)은 비츠바겐(Bitsbargain)의 자체 기획 브랜드입니다.<br>
+          당신의 오늘이 반짝이길 바랍니다. <b>With Glamthing</b>
+        </p>
+      </div>
+      <div class="foot-col">
+        <h5>쇼핑</h5>
+        <a href="index.html#best">베스트</a><a href="index.html#new">신상품</a><a href="index.html#all">전체 상품</a><a href="index.html#promo">기획전</a>
+      </div>
+      <div class="foot-col">
+        <h5>고객지원</h5>
+        <a href="#" data-soon="주문·배송 조회">주문·배송 조회</a><a href="#" data-soon="교환·반품 안내">교환·반품 안내</a><a href="#" data-soon="자주 묻는 질문">자주 묻는 질문</a><a href="#" data-soon="1:1 문의">1:1 문의</a>
+      </div>
+      <div class="foot-col">
+        <h5>브랜드</h5>
+        <a href="index.html#story">브랜드 스토리</a>
+        <a href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">네이버 스마트스토어</a>
+        <a href="https://www.bitsbargain.com">비츠바겐 홈</a>
+        <a href="#" data-soon="입점·제휴 문의">입점·제휴 문의</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="biz">
+        <b>비츠바겐 (Bitsbargain)</b> · 브랜드 글램띵(Glamthing)<br>
+        사업자등록번호 702-15-01865 <a class="biz-chk" href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=7021501865" target="_blank" rel="noopener">[사업자정보확인]</a>
+        · 통신판매업 신고번호 제2021-경기양주-1061호<br>
+        대표전화 070-8065-0865 · chloe@bitsbargain.com · 고객센터 평일 10:00–17:00 (점심 12:00–13:00)<br>
+        개인정보보호책임자 남화<br>
+        © 2026 Bitsbargain. All rights reserved.
+      </div>
+      <div class="sns">
+        <a href="#" data-soon="인스타그램" aria-label="인스타그램"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" data-soon="유튜브" aria-label="유튜브"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener" aria-label="스마트스토어"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 19V5l14 14V5"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="맨 위로"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg></button>
+<div id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+const won = n => n.toLocaleString('ko-KR');
+const off = p => Math.round((1 - p.price / p.list) * 100);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const id = new URLSearchParams(location.search).get('id');
+const item = P.find(p => p.id === id);
+const main = document.getElementById('main');
+
+if (!item) {
+  /* 잘못된/없는 id 로 들어와도 빈 화면 대신 안내 */
+  document.title = '상품을 찾을 수 없습니다 — 글램띵 Glamthing';
+  main.innerHTML = `
+    <div class="wrap notfound">
+      <img src="assets/badge-512.png" alt="">
+      <h2>상품을 찾을 수 없습니다</h2>
+      <p>주소가 잘못되었거나 판매가 종료된 상품입니다.</p>
+      <a class="btn btn-buy" href="index.html" style="display:inline-flex;padding:14px 28px;border-radius:99px;background:var(--violet);color:#fff">전체 상품 보러가기 →</a>
+    </div>`;
+} else {
+  document.title = `${item.name} — 글램띵 Glamthing`;
+  document.querySelector('meta[name="description"]')
+          .setAttribute('content', `${item.name} · 글램띵(Glamthing) 공식 브랜드스토어`);
+
+  const badges = [];
+  if (item.best && item.best <= 8) badges.push(`<span class="bdg best">BEST ${item.best}</span>`);
+  if (item.isNew) badges.push('<span class="bdg new">NEW</span>');
+  if (off(item) >= 35) badges.push(`<span class="bdg sale">${off(item)}%</span>`);
+  const chips = item.tags.map(t => `<span class="chip">${esc(t)}</span>`).join('') +
+                '<span class="chip free">무료배송</span>';
+
+  main.innerHTML = `
+  <div class="wrap crumb">
+    <a href="index.html">홈</a><span>›</span><a href="index.html#all">${esc(item.cat)}</a><span>›</span><b>${esc(item.name)}</b>
+  </div>
+
+  <section class="detail">
+    <div class="wrap">
+      <div class="gallery">
+        <div class="main">
+          <div class="badges">${badges.join('')}</div>
+          <img src="assets/products/${item.id}.jpg" alt="${esc(item.name)}">
+        </div>
+      </div>
+
+      <div class="buy">
+        <div class="cat">${esc(item.cat)}</div>
+        <h1>${esc(item.name)}</h1>
+        <div class="rate">
+          <span class="star">★ ${item.rating.toFixed(1)}</span>
+          <span>리뷰 ${won(item.rev)}건</span>
+        </div>
+
+        <div class="pricebox">
+          <div class="row">
+            <span class="off">${off(item)}%</span>
+            <span class="now">${won(item.price)}<small>원</small></span>
+            <span class="was">${won(item.list)}원</span>
+          </div>
+          <p class="pricenote">옵션에 따라 가격이 달라질 수 있습니다.</p>
+        </div>
+
+        <dl class="spec">
+          <div class="line"><dt>브랜드</dt><dd>글램띵 (Glamthing)</dd></div>
+          <div class="line"><dt>카테고리</dt><dd>${esc(item.cat)}</dd></div>
+          <div class="line"><dt>배송</dt><dd>무료배송 · 평일 오후 2시 이전 주문 시 당일 발송</dd></div>
+          <div class="line"><dt>교환·반품</dt><dd>수령 후 7일 이내 무조건 교환·반품</dd></div>
+          <div class="line"><dt>태그</dt><dd class="chips">${chips}</dd></div>
+        </dl>
+
+        <div class="soonbox">
+          <strong>온라인 주문 기능 준비 중입니다</strong>
+          <p>
+            글램띵 자체 스토어의 옵션 선택·장바구니·결제 기능은 준비 중입니다.
+            지금은 네이버 스마트스토어에서 구매하실 수 있습니다.
+          </p>
+        </div>
+
+        <div class="buy-row">
+          <button class="btn btn-like" id="likeBtn" aria-label="찜하기">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.5s-7.5-4.6-7.5-9.7a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8c0 5.1-7.5 9.7-7.5 9.7z"/></svg>
+          </button>
+          <button class="btn btn-cart" data-soon="장바구니">장바구니</button>
+          <a class="btn btn-buy" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">스마트스토어에서 구매 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="detail-body">
+    <div class="wrap">
+      <div class="tabbar">
+        <button class="on">상세정보</button>
+        <button data-soon="리뷰">리뷰 ${won(item.rev)}</button>
+        <button data-soon="Q&amp;A">문의</button>
+        <button data-soon="배송·반품 안내">배송·반품</button>
+      </div>
+      <div class="prep">
+        <img class="mark" src="assets/badge-512.png" alt="">
+        <h3>상세 정보 준비 중입니다</h3>
+        <p>
+          더 좋은 상세 페이지로 찾아뵙기 위해 준비하고 있습니다.<br>
+          지금은 네이버 스마트스토어에서 상세 정보를 확인하실 수 있습니다.
+        </p>
+        <a class="btn btn-primary go" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">스마트스토어에서 상세보기 →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="t"><h3>함께 보면 좋은 <span class="accent">글램띵</span></h3></div>
+          <p class="desc">같은 카테고리의 다른 상품</p>
+        </div>
+        <a class="more" href="index.html#all">전체보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="grid" id="relGrid"></div>
+    </div>
+  </section>`;
+
+  /* 관련 상품 — 같은 카테고리 우선, 모자라면 베스트로 채워 항상 4개 */
+  const same = P.filter(p => p.cat === item.cat && p.id !== item.id);
+  const fill = P.filter(p => p.cat !== item.cat && p.id !== item.id).sort((a, b) => (a.best || 99) - (b.best || 99));
+  const rel = [...same, ...fill].slice(0, 4);
+  document.getElementById('relGrid').innerHTML = rel.map(p => {
+    const href = `product.html?id=${p.id}`;
+    const b = [];
+    if (p.isNew) b.push('<span class="bdg new">NEW</span>');
+    if (off(p) >= 35) b.push(`<span class="bdg sale">${off(p)}%</span>`);
+    return `
+    <article class="card">
+      <div class="thumb">
+        <div class="badges">${b.join('')}</div>
+        <a class="thumb-link" href="${href}" aria-label="${esc(p.name)} 상세보기">
+          <img src="assets/products/${p.id}.jpg" alt="${esc(p.name)}" loading="lazy">
+        </a>
+      </div>
+      <a class="info" href="${href}">
+        <div class="cat">${esc(p.cat)}</div>
+        <h4 class="name">${esc(p.name)}</h4>
+        <div class="price">
+          <span class="off">${off(p)}%</span>
+          <span class="now">${won(p.price)}<small>원</small></span>
+          <span class="was">${won(p.list)}원</span>
+        </div>
+        <div class="meta"><span class="star">★ ${p.rating.toFixed(1)}</span><span>리뷰 ${won(p.rev)}</span></div>
+      </a>
+    </article>`;
+  }).join('');
+
+  document.getElementById('likeBtn').addEventListener('click', e => {
+    const b = e.currentTarget;
+    b.classList.toggle('on');
+    const on = b.classList.contains('on');
+    b.querySelector('svg').setAttribute('fill', on ? 'currentColor' : 'none');
+    toast(on ? '찜 목록에 담았습니다' : '찜을 해제했습니다');
+  });
+}
+
+/* 준비중 안내 — 죽은 링크 없이 일관된 피드백 */
+function soon(what){ toast(`${what} 기능은 준비 중입니다`); }
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-soon]');
+  if (!a) return;
+  e.preventDefault();
+  soon(a.dataset.soon);
+});
+
+/* 토스트 · 맨 위로 */
+let tt;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(tt);
+  tt = setTimeout(() => el.classList.remove('show'), 2000);
+}
+const toTop = document.getElementById('toTop');
+toTop.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+addEventListener('scroll', () => toTop.classList.toggle('show', scrollY > 700), {passive:true});
+</script>
+</body>
+</html>
