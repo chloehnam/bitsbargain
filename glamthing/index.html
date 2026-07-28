@@ -47,10 +47,6 @@
   .util{background:var(--ink);color:#cfc7e6;font-size:12px}
   .util .wrap{display:flex;align-items:center;justify-content:space-between;height:34px}
   .util .left{display:flex;align-items:center;gap:8px}
-  .util .tag{
-    background:var(--orange);color:#3b1a00;font-weight:800;
-    font-size:10px;letter-spacing:.4px;padding:2px 7px;border-radius:4px;
-  }
   .util nav{display:flex;gap:18px}
   .util nav a:hover{color:#fff}
 
@@ -396,7 +392,6 @@
 <div class="util">
   <div class="wrap">
     <div class="left">
-      <span class="tag">MOCKUP</span>
       <span class="desc">글램띵 공식 브랜드스토어 · 운영 <b style="color:#fff">비츠바겐(Bitsbargain)</b></span>
     </div>
     <nav>
@@ -415,22 +410,22 @@
         <span class="sub">BY BITSBARGAIN</span>
       </span>
     </a>
-    <form class="search" onsubmit="event.preventDefault();toast('검색은 목업에서 동작하지 않습니다')">
+    <form class="search" onsubmit="event.preventDefault();toast('검색 기능은 준비 중입니다')">
       <input type="search" placeholder="글램띵에서 무엇을 찾으세요?" aria-label="상품 검색">
       <button type="submit" aria-label="검색">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
       </button>
     </form>
     <div class="icons">
-      <button aria-label="찜한 상품" onclick="toast('찜 목록 · 목업')">
+      <button aria-label="찜한 상품" onclick="toast('찜 목록은 준비 중입니다')">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 20.5s-7.5-4.6-7.5-9.7a4.3 4.3 0 0 1 7.5-2.8 4.3 4.3 0 0 1 7.5 2.8c0 5.1-7.5 9.7-7.5 9.7z"/></svg>
         <span class="count" id="likeCount">0</span>
       </button>
-      <button aria-label="장바구니" onclick="toast('장바구니 · 목업')">
+      <button aria-label="장바구니" onclick="toast('장바구니는 준비 중입니다')">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16l-1.4 10.4a2 2 0 0 1-2 1.6H7.4a2 2 0 0 1-2-1.6z"/><path d="M9 6V4.8A3 3 0 0 1 12 2a3 3 0 0 1 3 2.8V6"/></svg>
         <span class="count">2</span>
       </button>
-      <button aria-label="마이페이지" onclick="toast('마이페이지 · 목업')">
+      <button aria-label="마이페이지" onclick="toast('마이페이지는 준비 중입니다')">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
       </button>
     </div>
@@ -615,7 +610,7 @@
         <div class="t"><h3>전체 상품</h3></div>
         <p class="desc"><span id="cnt">0</span>개의 상품 · 글램띵 공식 브랜드스토어</p>
       </div>
-      <a class="more" href="#" onclick="event.preventDefault();toast('정렬 · 목업')">인기순 ▾</a>
+      <a class="more" href="#" onclick="event.preventDefault();toast('정렬 기능은 준비 중입니다')">인기순 ▾</a>
     </div>
     <div class="tabs" id="tabs"></div>
     <div class="grid" id="allGrid"></div>
@@ -641,7 +636,7 @@
         <div class="t"><h3>포토 리뷰</h3></div>
         <p class="desc">평균 별점 <b style="color:var(--orange-deep)">4.8</b> · 누적 리뷰 2,314건</p>
       </div>
-      <a class="more" href="#" onclick="event.preventDefault();toast('리뷰 전체보기 · 목업')">리뷰 전체보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></a>
+      <a class="more" href="#" onclick="event.preventDefault();toast('리뷰 전체보기는 준비 중입니다')">리뷰 전체보기 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></a>
     </div>
     <div class="reviews" id="reviews"></div>
   </div>
@@ -710,8 +705,7 @@
     </div>
     <div class="foot-bot">
       <div class="biz">
-        <b>비츠바겐 (Bitsbargain)</b> · 대표 ○○○ · 브랜드 글램띵(Glamthing)<br>
-        사업자등록번호 000-00-00000 · 통신판매업신고 제0000-서울-0000호 <span style="color:#5d5675">(목업 · 실제 값 아님)</span><br>
+        <b>비츠바겐 (Bitsbargain)</b> · 브랜드 글램띵(Glamthing)<br>
         고객센터 평일 10:00–17:00 (점심 12:00–13:00) · chloe@bitsbargain.com<br>
         © 2026 Bitsbargain. All rights reserved.
       </div>
