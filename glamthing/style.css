@@ -480,10 +480,12 @@
   justify-content:center;padding:17px 16px;font-size:15px;font-weight:800;
   border-radius:99px;color:#fff;transition:.18s;
 }
-.btn-shop.coupang{background:#c8102e;box-shadow:0 6px 18px rgba(200,16,46,.24)}
-.btn-shop.coupang:hover{background:#a80d26;transform:translateY(-2px)}
-.btn-shop.naver{background:#03c75a;box-shadow:0 6px 18px rgba(3,199,90,.24)}
+.btn-shop.coupang{background:var(--orange);color:#40200a;box-shadow:0 6px 18px rgba(255,146,73,.34)}
+.btn-shop.coupang:hover{background:#ffa768;transform:translateY(-2px)}
+.btn-shop.naver{background:#03c75a;box-shadow:0 6px 18px rgba(3,199,90,.28)}
 .btn-shop.naver:hover{background:#02a44b;transform:translateY(-2px)}
+.shop-row.single{grid-template-columns:1fr}
+.shop-row.single.go{max-width:340px}
 
 /* 준비중인 보조 액션은 한 단계 낮게 */
 .buy-row.sub{margin-top:10px}

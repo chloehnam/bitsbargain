@@ -156,6 +156,16 @@ if (!item) {
   const chips = item.tags.map(t => `<span class="chip">${esc(t)}</span>`).join('') +
                 '<span class="chip free">무료배송</span>';
 
+  /* 판매 채널 링크 — 쿠팡은 옵션 단위 딥링크, 네이버는 판매중인 상품만 */
+  const cpUrl = `https://www.coupang.com/vp/products/${item.id}?vendorItemId=${item.opt}`;
+  const nvUrl = item.naver ? `https://smartstore.naver.com/bitsbargain/products/${item.naver}` : null;
+  const shopRow = (label, extra = '') => `
+    <div class="shop-row${nvUrl ? '' : ' single'} ${extra}">
+      <a class="btn btn-shop coupang" href="${cpUrl}" target="_blank" rel="noopener">쿠팡에서 ${label} →</a>
+      ${nvUrl ? `<a class="btn btn-shop naver" href="${nvUrl}" target="_blank" rel="noopener">스마트스토어에서 ${label} →</a>` : ''}
+    </div>`;
+  const channels = nvUrl ? '네이버 스마트스토어와 쿠팡' : '쿠팡';
+
   main.innerHTML = `
   <div class="wrap crumb">
     <a href="index.html">홈</a><span>›</span><a href="index.html#all">${esc(item.cat)}</a><span>›</span><b>${esc(item.name)}</b>
@@ -196,17 +206,14 @@ if (!item) {
         </dl>
 
         <div class="soonbox">
-          <strong>네이버 스마트스토어와 쿠팡에서 주문하실 수 있습니다</strong>
+          <strong>${channels}에서 주문하실 수 있습니다</strong>
           <p>
             글램띵 자체 스토어의 옵션 선택·장바구니·결제 기능은 준비 중입니다.
             아래 채널에서 바로 주문하실 수 있습니다.
           </p>
         </div>
 
-        <div class="shop-row">
-          <a class="btn btn-shop coupang" href="https://www.coupang.com/vp/products/${item.id}" target="_blank" rel="noopener">쿠팡에서 주문 →</a>
-          <a class="btn btn-shop naver" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">스마트스토어에서 주문 →</a>
-        </div>
+        ${shopRow('주문')}
 
         <div class="buy-row sub">
           <button class="btn btn-like" id="likeBtn" aria-label="찜하기">
@@ -231,16 +238,9 @@ if (!item) {
         <h3>상세 정보 준비 중입니다</h3>
         <p>
           더 좋은 상세 페이지로 찾아뵙기 위해 준비하고 있습니다.<br>
-          지금은 네이버 스마트스토어와 쿠팡에서 상세 정보를 확인하실 수 있습니다.
+          지금은 ${channels}에서 상세 정보를 확인하실 수 있습니다.
         </p>
-        <div class="shop-row go">
-          <a class="btn btn-shop coupang" href="https://www.coupang.com/vp/products/${item.id}" target="_blank" rel="noopener">
-            쿠팡에서 상세보기 →
-          </a>
-          <a class="btn btn-shop naver" href="https://smartstore.naver.com/bitsbargain" target="_blank" rel="noopener">
-            스마트스토어에서 상세보기 →
-          </a>
-        </div>
+        ${shopRow('상세보기', 'go')}
       </div>
     </div>
   </section>
