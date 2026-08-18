@@ -12,7 +12,13 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bitsbargain — Tally, 이커머스 셀러 인텔리전스</title>
+<title>Bitsbargain — 데이터로 운영하는 이커머스 유통</title>
+<meta name="description" content="비츠바겐(Bitsbargain)은 정밀한 데이터로 유통의 비효율과 비용을 제거하여 시장에 압도적인 가격 경쟁력을 만드는 테크 기반 이커머스 오퍼레이터입니다. 자체 운영 시스템 Tally로 소싱부터 가격 책정, 광고, 재고 회전까지 유통의 전 과정을 운영합니다.">
+<meta property="og:title" content="Bitsbargain — 데이터로 운영하는 이커머스 유통">
+<meta property="og:description" content="Bits(데이터) + Bargain(가격 경쟁력). 데이터 인프라를 무기로 유통의 전 과정을 최적화하는 테크 기반 이커머스 오퍼레이터.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.bitsbargain.com/">
+<meta property="og:site_name" content="Bitsbargain">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
@@ -139,8 +145,14 @@
   }
   .hero p {
     font-size: 18px; color: rgba(255,255,255,0.6);
-    max-width: 520px; margin: 0 auto 48px; line-height: 1.8;
+    max-width: 620px; margin: 0 auto 48px; line-height: 1.8;
   }
+  .hero p strong { color: rgba(255,255,255,0.95); font-weight: 600; }
+  .mockup-caption {
+    max-width: 900px; margin: 16px auto 0;
+    font-size: 13px; color: rgba(255,255,255,0.42); line-height: 1.7;
+  }
+  .mockup-caption strong { color: rgba(255,255,255,0.7); font-weight: 600; }
   .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
@@ -279,6 +291,66 @@
   .metric .m-num span { color: var(--primary); }
   .metric .m-label {
     font-size: 14px; color: var(--text-light); margin-top: 6px; font-weight: 400;
+  }
+
+  /* ── STATEMENT ── */
+  #statement {
+    background-color: var(--dark);
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(59,130,246,0.18) 0%, transparent 55%),
+      radial-gradient(circle at 88% 100%, rgba(167,139,250,0.15) 0%, transparent 55%);
+  }
+  #statement .section-label { color: #a78bfa; }
+  #statement .section-title { color: var(--white); }
+  .stmt-lead {
+    font-size: 18px; line-height: 1.9;
+    color: rgba(255,255,255,0.66);
+    max-width: 780px;
+  }
+  .stmt-lead strong { color: var(--white); font-weight: 600; }
+  .equation {
+    display: grid; grid-template-columns: 1fr 48px 1fr;
+    gap: 16px; align-items: stretch; margin-top: 52px;
+  }
+  .eq-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+  .eq-card .eq-key {
+    font-size: 26px; font-weight: 700; color: var(--white); letter-spacing: -0.5px;
+  }
+  .eq-card .eq-sub {
+    font-size: 13px; font-weight: 600; color: #60a5fa;
+    letter-spacing: 0.3px; margin: 4px 0 18px;
+  }
+  .eq-card.bargain .eq-sub { color: #a78bfa; }
+  .eq-card p {
+    font-size: 14px; line-height: 1.85;
+    color: rgba(255,255,255,0.6); margin: 0;
+  }
+  .eq-op {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px; font-weight: 400; color: rgba(255,255,255,0.45);
+  }
+  .eq-result {
+    margin-top: 16px;
+    display: flex; align-items: center; gap: 22px;
+    background: rgba(96,165,250,0.10);
+    border: 1px solid rgba(96,165,250,0.30);
+    border-radius: var(--radius);
+    padding: 26px 32px;
+  }
+  .eq-result .eq-sign {
+    font-size: 32px; font-weight: 400; color: rgba(255,255,255,0.5);
+    flex-shrink: 0; line-height: 1;
+  }
+  .eq-result .eq-en {
+    font-size: 20px; font-weight: 700; color: var(--white); letter-spacing: -0.3px;
+  }
+  .eq-result .eq-ko {
+    font-size: 14px; color: rgba(255,255,255,0.58); margin-top: 3px;
   }
 
   /* ── ABOUT ── */
@@ -523,6 +595,12 @@
     .section-title { font-size: 26px; }
     .section-desc { font-size: 15px; }
     .about-layout, .team-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stmt-lead { font-size: 15px; }
+    .equation { grid-template-columns: 1fr; gap: 12px; margin-top: 32px; }
+    .eq-card { padding: 24px; }
+    .eq-op { padding: 2px 0; font-size: 22px; }
+    .eq-result { flex-direction: column; align-items: flex-start; gap: 10px; padding: 24px; }
+    .mockup-caption { font-size: 12px; }
     .features-grid { grid-template-columns: 1fr; }
     .feat-card { padding: 28px 24px; }
     .steps { grid-template-columns: repeat(2, 1fr); gap: 24px; }
@@ -552,9 +630,10 @@
 bitsbargain
     </a>
     <ul class="nav-links">
+      <li><a href="#statement">Business</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#how">Process</a></li>
+      <li><a href="#features">Tally</a></li>
+      <li><a href="#how">Operations</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -564,13 +643,13 @@ bitsbargain
 <section class="hero">
   <div class="hero-badge">
     <span class="dot"></span>
-    Tally — Now in Production
+    Data-driven Commerce Operator
   </div>
-  <h1>이커머스 셀러를 위한<br><span class="gradient">올인원 인텔리전스 플랫폼</span></h1>
-  <p>매출, 광고, 재고, 정산을 하나의 대시보드에서.<br>데이터 기반 의사결정으로 셀러의 성장을 가속합니다.</p>
+  <h1>데이터가 만드는<br><span class="gradient">압도적인 가격 경쟁력</span></h1>
+  <p>비츠바겐은 소싱부터 가격 책정, 광고, 재고 회전까지 유통의 전 과정을<br>자체 데이터 인프라 <strong>Tally</strong> 위에서 운영하는 테크 기반 유통사입니다.</p>
   <div class="hero-btns">
-    <a href="#features" class="btn-primary">
-      서비스 살펴보기
+    <a href="#statement" class="btn-primary">
+      비즈니스 살펴보기
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
     </a>
   </div>
@@ -586,9 +665,9 @@ bitsbargain
           <div class="sb-item active">Dashboard</div>
           <div class="sb-item">매출분석</div>
           <div class="sb-item">광고센터</div>
-          <div class="sb-item">재고관리</div>
-          <div class="sb-item">정산</div>
-          <div class="sb-item">키워드분석</div>
+          <div class="sb-item">재고·회전율</div>
+          <div class="sb-item">원가·정산</div>
+          <div class="sb-item">사입관리</div>
           <div class="sb-item">노출순위</div>
         </div>
         <div class="mockup-content">
@@ -605,7 +684,7 @@ bitsbargain
             <div class="mc-value green">342%</div>
           </div>
           <div class="mockup-card">
-            <div class="mc-label">Net Profit</div>
+            <div class="mc-label">Net Margin</div>
             <div class="mc-value purple">₩680K</div>
           </div>
           <div class="mockup-chart" id="mockupChart"></div>
@@ -613,49 +692,85 @@ bitsbargain
       </div>
     </div>
   </div>
+  <p class="mockup-caption"><strong>Tally</strong> — 비츠바겐이 매일 유통을 운영하는 자체 시스템. 외부 판매용 제품이 아닌, 우리 유통의 엔진입니다.</p>
 </section>
 
 <!-- METRICS -->
 <div class="metrics">
   <div class="metrics-grid">
     <div class="metric">
-      <div class="m-num">10<span>+</span></div>
-      <div class="m-label">자동화 모듈</div>
+      <div class="m-num">3<span>채널</span></div>
+      <div class="m-label">쿠팡 · 스마트스토어 · 토스쇼핑</div>
     </div>
     <div class="metric">
-      <div class="m-num">24<span>/7</span></div>
-      <div class="m-label">실시간 모니터링</div>
+      <div class="m-num">10<span>+</span></div>
+      <div class="m-label">운영 자동화 모듈</div>
     </div>
     <div class="metric">
       <div class="m-num">5<span>min</span></div>
       <div class="m-label">데이터 갱신 주기</div>
     </div>
     <div class="metric">
-      <div class="m-num">99.9<span>%</span></div>
-      <div class="m-label">서비스 가동률</div>
+      <div class="m-num">24<span>/7</span></div>
+      <div class="m-label">무인 운영 · 이상 감지</div>
     </div>
   </div>
 </div>
+
+<!-- STATEMENT -->
+<section id="statement">
+  <div class="container">
+    <div class="section-label">Positioning</div>
+    <div class="section-title">데이터와 유통,<br>두 축으로 움직이는 회사</div>
+    <p class="stmt-lead">
+      <strong>유통의 모든 결정을 데이터 위에 세웁니다.</strong><br>
+      비츠바겐은 정밀한 데이터로 유통의 비효율과 비용을 제거하여,
+      시장에 압도적인 가격 경쟁력을 만듭니다.
+    </p>
+
+    <div class="equation">
+      <div class="eq-card">
+        <div class="eq-key">Bits</div>
+        <div class="eq-sub">데이터 · 기술 인프라</div>
+        <p>실시간 광고비와 ROAS 트래킹, 원가와 마진 계산, 재고 회전율 예측, 경쟁 상품 순위 추적. 자체 운영 시스템 <strong>Tally</strong>가 유통에서 발생하는 모든 숫자를 놓치지 않고 붙잡습니다.</p>
+      </div>
+      <div class="eq-op">+</div>
+      <div class="eq-card bargain">
+        <div class="eq-key">Bargain</div>
+        <div class="eq-sub">유통의 본질</div>
+        <p>상품 소싱과 발주, 가격 책정, 그리고 쿠팡·스마트스토어·토스쇼핑으로 이어지는 채널 공급. 실물 유통의 전 과정을 직접 운영하며, 절감한 비용을 그대로 가격 경쟁력으로 되돌립니다.</p>
+      </div>
+    </div>
+
+    <div class="eq-result">
+      <div class="eq-sign">=</div>
+      <div>
+        <div class="eq-en">Data-driven Commerce Operator</div>
+        <div class="eq-ko">단순 유통 벤더가 아닌, 데이터 인프라를 무기로 소싱부터 마진 관리와 재고 회전까지 유통의 전 과정을 최적화하는 테크 기반 이커머스 오퍼레이터.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
     <div class="section-label">About</div>
-    <div class="section-title">왜 Tally를 만들었는가</div>
+    <div class="section-title">왜 데이터로 유통을 하는가</div>
     <div class="about-layout">
       <div class="about-text">
-        <p><strong>비츠바겐(Bitsbargain)</strong>은 이커머스 셀러가 겪는 데이터 사일로 문제를 해결하기 위해 설립된 테크 스타트업입니다.</p>
-        <p>매출은 Wing에서, 광고는 광고센터에서, 정산은 엑셀에서 — 흩어진 데이터를 매일 수작업으로 취합하는 셀러의 현실에서 출발했습니다.</p>
-        <p><strong>Tally</strong>는 이 모든 데이터를 자동 수집·통합하여 하나의 대시보드에서 실시간으로 보여주는 <strong>셀러 인텔리전스 플랫폼</strong>입니다. 직접 셀러로서 겪은 페인포인트를 기술로 해결합니다.</p>
+        <p><strong>비츠바겐(Bitsbargain)</strong>은 소비재를 직접 소싱해 쿠팡·네이버 스마트스토어·토스쇼핑에 공급하는 이커머스 유통사입니다.</p>
+        <p>유통의 수익은 한 번의 큰 결정에서 나오지 않습니다. 원가 몇백 원, 광고비 몇 퍼센트, 재고 며칠 — 이런 작은 숫자들이 상품 수백 개에 쌓여 만들어집니다. 그래서 우리는 그 숫자를 전부 측정하는 쪽을 택했습니다.</p>
+        <p>사명 그대로입니다. <strong>Bits</strong>(데이터)로 유통의 비효율을 걷어내고, 그렇게 확보한 여유를 <strong>Bargain</strong>(가격 경쟁력)으로 시장에 돌려줍니다. 이 구조를 실제로 굴리는 자체 인프라가 <strong>Tally</strong>입니다.</p>
       </div>
       <div class="about-values">
         <div class="value-item">
           <div class="value-icon blue">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z"/></svg>
           </div>
           <div>
-            <h4>Automation First</h4>
-            <p>수작업 제거. 데이터 수집부터 보고서 생성까지 완전 자동화</p>
+            <h4>Numbers First</h4>
+            <p>원가 · 광고비 · 회전율을 상품 단위로 계산해, 측정된 숫자에서 결정을 시작합니다</p>
           </div>
         </div>
         <div class="value-item">
@@ -663,8 +778,8 @@ bitsbargain
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
           <div>
-            <h4>Single Source of Truth</h4>
-            <p>모든 채널의 매출·비용·수익을 하나의 뷰로 통합</p>
+            <h4>Full-stack Commerce</h4>
+            <p>소싱 · 가격 · 광고 · 재고 · 정산까지 유통의 전 과정을 직접 운영합니다</p>
           </div>
         </div>
         <div class="value-item">
@@ -672,8 +787,8 @@ bitsbargain
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
           </div>
           <div>
-            <h4>Battle-tested</h4>
-            <p>자사 셀러 운영으로 실전 검증된 시스템</p>
+            <h4>Own Infrastructure</h4>
+            <p>운영 시스템을 직접 개발합니다. 매일의 실제 주문과 정산이 그대로 검증 환경입니다</p>
           </div>
         </div>
       </div>
@@ -684,9 +799,9 @@ bitsbargain
 <!-- FEATURES -->
 <section id="features">
   <div class="container text-center">
-    <div class="section-label">Features</div>
-    <div class="section-title">셀러가 진짜 필요한 기능만</div>
-    <div class="section-desc">매일 반복되는 수작업을 자동화하고,<br>흩어진 데이터를 한눈에 볼 수 있도록 설계했습니다.</div>
+    <div class="section-label">Tally</div>
+    <div class="section-title">유통을 움직이는 데이터 인프라</div>
+    <div class="section-desc">유통의 각 단계마다 필요한 숫자를 자동으로 모으고 계산합니다.<br>보고용 대시보드가 아니라, 매일의 판단이 실제로 내려지는 곳입니다.</div>
   </div>
   <div class="container">
     <div class="features-grid">
@@ -694,49 +809,49 @@ bitsbargain
         <div class="feat-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
         </div>
-        <h3>실시간 매출 대시보드</h3>
-        <p>로켓·판매자 채널별 매출, 주문 수, 순이익을 실시간으로 추적. 어제 대비 변동까지 한눈에 파악합니다.</p>
+        <h3>실시간 매출 · 순이익</h3>
+        <p>채널별·상품별 매출과 순이익을 실시간으로 추적합니다. 어제 대비 변동을 그날 안에 확인해 판매 전략을 바로 조정합니다.</p>
         <span class="feat-tag">Real-time</span>
       </div>
       <div class="feat-card">
         <div class="feat-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/></svg>
         </div>
-        <h3>광고 성과 분석</h3>
-        <p>캠페인별 ROAS, CPC, 전환율 자동 계산. 키워드 단위 수익성 분석으로 광고비 최적화를 지원합니다.</p>
-        <span class="feat-tag">Analytics</span>
+        <h3>광고비 · 마진 최적화</h3>
+        <p>캠페인과 키워드 단위로 ROAS와 손익분기 CPC를 계산합니다. 마진이 남는 지점까지만 광고를 집행해 판매비를 통제합니다.</p>
+        <span class="feat-tag">Profitability</span>
       </div>
       <div class="feat-card">
         <div class="feat-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
         </div>
-        <h3>재고 · 사입 관리</h3>
-        <p>실시간 재고 추적, 자재 소진 예상일 계산, 사입 이력 관리. 품절 리스크를 사전에 알림으로 전달합니다.</p>
-        <span class="feat-tag">Automation</span>
+        <h3>재고 회전 · 발주</h3>
+        <p>재고 회전율과 소진 예상일을 계산해 발주 시점을 잡습니다. 품절로 잃는 매출과 과잉 재고로 묶이는 자본을 동시에 줄입니다.</p>
+        <span class="feat-tag">Inventory</span>
       </div>
       <div class="feat-card">
         <div class="feat-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
         </div>
-        <h3>정산 자동 다운로드</h3>
-        <p>정산 엑셀을 매일 자동 다운로드하고 수수료·배송비·할인 내역을 파싱하여 상품별 순수익을 산출합니다.</p>
-        <span class="feat-tag">Finance</span>
+        <h3>원가 · 정산 정밀 계산</h3>
+        <p>채널 정산 내역을 매일 자동 수집해 수수료·배송비·할인까지 반영한 상품별 실순익을 산출합니다. 모든 가격 책정의 기준선입니다.</p>
+        <span class="feat-tag">Unit Economics</span>
       </div>
       <div class="feat-card">
         <div class="feat-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
         </div>
-        <h3>키워드 · 노출순위 분석</h3>
-        <p>검색 트렌드, 월별 검색량, 시장 규모를 분석하고 내 상품의 노출 순위를 자동으로 추적합니다.</p>
-        <span class="feat-tag">SEO</span>
+        <h3>시장 · 경쟁 순위 추적</h3>
+        <p>검색량과 시장 규모를 분석하고, 경쟁 상품과 우리 상품의 노출 순위를 매일 추적합니다. 무엇을 소싱할지 여기서 정합니다.</p>
+        <span class="feat-tag">Sourcing</span>
       </div>
       <div class="feat-card">
         <div class="feat-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
         </div>
-        <h3>텔레그램 알림</h3>
-        <p>매출 변동, 재고 부족, 광고 이상 등 주요 이벤트를 텔레그램으로 즉시 알림. 어디서든 실시간 대응합니다.</p>
-        <span class="feat-tag">Notification</span>
+        <h3>무인 운영 · 이상 감지</h3>
+        <p>가격 변동, 재고 부족, 광고 이상 징후를 감지해 즉시 알립니다. 사람이 화면을 지키지 않아도 운영이 멈추지 않습니다.</p>
+        <span class="feat-tag">Automation</span>
       </div>
     </div>
   </div>
@@ -745,31 +860,31 @@ bitsbargain
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="container text-center">
-    <div class="section-label">How It Works</div>
-    <div class="section-title">복잡한 셀링 데이터, 심플하게</div>
-    <div class="section-desc">연동부터 인사이트까지 4단계로 완성됩니다.</div>
+    <div class="section-label">Operations</div>
+    <div class="section-title">소싱에서 회전까지, 하나의 흐름</div>
+    <div class="section-desc">데이터는 유통의 마지막 단계에 붙는 리포트가 아닙니다.<br>네 단계 전부에 처음부터 개입합니다.</div>
   </div>
   <div class="container">
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>채널 연동</h3>
-        <p>쿠팡 Wing, 광고센터, 네이버 등 판매 채널을 연결합니다</p>
+        <h3>소싱</h3>
+        <p>검색량 · 시장 규모 · 경쟁 순위 데이터로 팔릴 상품을 먼저 가려냅니다</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>자동 수집</h3>
-        <p>매출·주문·광고·정산 데이터를 실시간으로 자동 수집합니다</p>
+        <h3>가격 책정</h3>
+        <p>원가 · 수수료 · 배송비 · 광고비를 합산해 마진이 확보되는 가격을 계산합니다</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>통합 분석</h3>
-        <p>채널별 데이터를 통합하여 상품 단위 수익성을 계산합니다</p>
+        <h3>공급 · 판매</h3>
+        <p>세 채널에 상품을 공급하고, 손익분기 CPC 안에서 광고를 집행합니다</p>
       </div>
       <div class="step">
         <div class="step-num">4</div>
-        <h3>인사이트 전달</h3>
-        <p>대시보드와 알림을 통해 즉시 의사결정할 수 있도록 합니다</p>
+        <h3>재고 회전</h3>
+        <p>회전율과 소진일을 추적해, 재고가 자본으로 묶이지 않고 계속 흐르도록 관리합니다</p>
       </div>
     </div>
   </div>
@@ -782,9 +897,9 @@ bitsbargain
     <div class="section-title">작지만 강한 팀</div>
     <div class="team-grid">
       <div class="team-text">
-        <p>비츠바겐은 <strong>이커머스 실무 경험과 소프트웨어 엔지니어링을 결합</strong>한 팀입니다. 직접 셀러로 운영하며 겪은 문제를 기술로 해결합니다.</p>
-        <p>모든 기능은 실제 운영 데이터로 검증되고, 하루 수백 건의 주문을 처리하는 프로덕션 환경에서 안정성을 입증했습니다.</p>
-        <p>우리는 셀러가 데이터를 모으는 데 시간을 쓰지 않고, <strong>데이터를 기반으로 결정하는 데 집중</strong>할 수 있도록 돕습니다.</p>
+        <p>비츠바겐은 <strong>유통 실무와 소프트웨어 엔지니어링을 한 팀에서</strong> 함께 합니다. 상품을 고르는 일과 시스템을 만드는 일이 분리되어 있지 않습니다.</p>
+        <p>모든 기능은 실제 판매 데이터로 검증됩니다. 매일 들어오는 주문과 정산이 그대로 프로덕션 환경이고, 틀린 계산은 그날의 마진으로 즉시 드러납니다.</p>
+        <p>우리는 데이터를 모으는 데 시간을 쓰지 않습니다. 그 시간을 <strong>무엇을 팔고 얼마에 팔지 결정하는 데</strong> 씁니다.</p>
         <div class="team-hiring">
           <span class="dot"></span>
           We're Building — Stay tuned
@@ -793,15 +908,15 @@ bitsbargain
       <div class="team-visual">
         <div class="team-card">
           <div class="tc-role">Mission</div>
-          <div class="tc-desc">이커머스 셀러의 데이터 운영을 자동화하여 더 나은 비즈니스 결정을 가능하게 한다</div>
+          <div class="tc-desc">데이터로 유통의 비효율과 비용을 제거하여, 시장에 더 나은 가격을 공급한다</div>
         </div>
         <div class="team-card">
-          <div class="tc-role">E-Commerce</div>
-          <div class="tc-desc">쿠팡 · 네이버 마켓 실전 운영 노하우</div>
+          <div class="tc-role">Commerce</div>
+          <div class="tc-desc">소싱 · 가격 · 채널 운영 실전 노하우</div>
         </div>
         <div class="team-card">
           <div class="tc-role">Engineering</div>
-          <div class="tc-desc">풀스택 개발 및 데이터 파이프라인 설계</div>
+          <div class="tc-desc">데이터 파이프라인과 운영 자동화 자체 개발</div>
         </div>
       </div>
     </div>
@@ -838,8 +953,17 @@ bitsbargain
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
           </div>
           <div>
-            <div class="label">Product</div>
-            <div class="value">Tally — Seller Intelligence Platform</div>
+            <div class="label">System</div>
+            <div class="value">Tally — In-house Commerce Operations Platform</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c1.126 0 2.113-.62 2.625-1.538a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"/></svg>
+          </div>
+          <div>
+            <div class="label">Channels</div>
+            <div class="value">쿠팡 · 네이버 스마트스토어 · 토스쇼핑</div>
           </div>
         </div>
         <div class="contact-row">
@@ -848,7 +972,7 @@ bitsbargain
           </div>
           <div>
             <div class="label">Industry</div>
-            <div class="value">E-Commerce SaaS · Seller Tools</div>
+            <div class="value">E-Commerce Distribution · Data-driven Operations</div>
           </div>
         </div>
       </div>
@@ -865,7 +989,7 @@ bitsbargain
     </div>
     <div class="footer-right">
       <p><a href="mailto:chloe@bitsbargain.com">chloe@bitsbargain.com</a></p>
-      <p style="margin-top:4px;">Tally — Seller Intelligence Platform</p>
+      <p style="margin-top:4px;">Data-driven Commerce Operator</p>
     </div>
   </div>
 </footer>
